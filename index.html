@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Store — Open-Source App Store for GitHub Releases</title>
     <meta name="description" content="Discover, install, and update open-source apps directly from GitHub releases. One-click installs for Android, Windows, macOS, and Linux.">
-    <meta name="theme-color" content="#1a1c1e" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#f8f9ff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f1512" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f4fbf7" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/rainxchzed/Github-Store/main/composeApp/src/commonMain/composeResources/drawable/app-icon.png">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ─── Design Tokens (Material You Expressive — Teal seed) ─── */
+        /* ══════════════════════════════════════════════════════════════
+           DESIGN TOKENS — Material You Expressive (Teal seed)
+           ══════════════════════════════════════════════════════════════ */
         :root {
-            /* Light theme */
             --md-primary: #006b5e;
             --md-on-primary: #ffffff;
             --md-primary-container: #5bf5d8;
@@ -31,7 +31,6 @@
             --md-tertiary-container: #c8e6ff;
             --md-surface: #f4fbf7;
             --md-surface-dim: #d5dbd8;
-            --md-surface-bright: #f4fbf7;
             --md-surface-container-lowest: #ffffff;
             --md-surface-container-low: #eef5f1;
             --md-surface-container: #e8efeb;
@@ -43,28 +42,20 @@
             --md-outline-variant: #bfc9c4;
             --md-inverse-surface: #2c322f;
             --md-inverse-on-surface: #ecf2ee;
-            --md-shadow: rgba(0,0,0,0.15);
-            --md-scrim: rgba(0,0,0,0.32);
+            --md-glow: rgba(0, 107, 94, 0.12);
+            --md-glow-strong: rgba(0, 107, 94, 0.25);
 
-            /* Elevation overlays */
-            --elevation-1: 0 1px 3px 1px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.12);
-            --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.12);
-            --elevation-3: 0 4px 8px 3px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.12);
+            --elevation-1: 0 1px 3px 1px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.1);
+            --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.1);
+            --elevation-3: 0 6px 16px 4px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.1);
+            --elevation-4: 0 8px 28px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);
 
-            /* Shape */
-            --shape-xs: 4px;
-            --shape-sm: 8px;
-            --shape-md: 12px;
-            --shape-lg: 16px;
-            --shape-xl: 28px;
-            --shape-full: 9999px;
+            --shape-sm: 8px; --shape-md: 12px; --shape-lg: 16px;
+            --shape-xl: 28px; --shape-full: 9999px;
 
-            /* Motion */
             --motion-standard: cubic-bezier(0.2, 0, 0, 1);
             --motion-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
-            --motion-duration-short: 200ms;
-            --motion-duration-medium: 400ms;
-            --motion-duration-long: 600ms;
+            --motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         [data-theme="dark"] {
@@ -81,7 +72,6 @@
             --md-tertiary-container: #2b4a5f;
             --md-surface: #0f1512;
             --md-surface-dim: #0f1512;
-            --md-surface-bright: #353b38;
             --md-surface-container-lowest: #0a0f0d;
             --md-surface-container-low: #171d1b;
             --md-surface-container: #1b211f;
@@ -93,15 +83,15 @@
             --md-outline-variant: #3f4945;
             --md-inverse-surface: #dde4e0;
             --md-inverse-on-surface: #2c322f;
-            --md-shadow: rgba(0,0,0,0.4);
-            --md-scrim: rgba(0,0,0,0.6);
+            --md-glow: rgba(53, 216, 188, 0.1);
+            --md-glow-strong: rgba(53, 216, 188, 0.2);
 
-            --elevation-1: 0 1px 3px 1px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.3);
-            --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.3);
-            --elevation-3: 0 4px 8px 3px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.3);
+            --elevation-1: 0 1px 3px 1px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+            --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.35);
+            --elevation-3: 0 6px 16px 4px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.3);
+            --elevation-4: 0 8px 28px 6px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* System preference detection */
         @media (prefers-color-scheme: dark) {
             [data-theme="auto"] {
                 --md-primary: #35d8bc;
@@ -117,7 +107,6 @@
                 --md-tertiary-container: #2b4a5f;
                 --md-surface: #0f1512;
                 --md-surface-dim: #0f1512;
-                --md-surface-bright: #353b38;
                 --md-surface-container-lowest: #0a0f0d;
                 --md-surface-container-low: #171d1b;
                 --md-surface-container: #1b211f;
@@ -129,62 +118,55 @@
                 --md-outline-variant: #3f4945;
                 --md-inverse-surface: #dde4e0;
                 --md-inverse-on-surface: #2c322f;
-                --md-shadow: rgba(0,0,0,0.4);
-                --md-scrim: rgba(0,0,0,0.6);
+                --md-glow: rgba(53, 216, 188, 0.1);
+                --md-glow-strong: rgba(53, 216, 188, 0.2);
 
-                --elevation-1: 0 1px 3px 1px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.3);
-                --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.3);
-                --elevation-3: 0 4px 8px 3px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.3);
+                --elevation-1: 0 1px 3px 1px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+                --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.35);
+                --elevation-3: 0 6px 16px 4px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.3);
+                --elevation-4: 0 8px 28px 6px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
             }
         }
 
-        /* ─── Reset & Base ─── */
+        /* ══════════════════════════════════════════════════════════════
+           RESET & BASE
+           ══════════════════════════════════════════════════════════════ */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html {
-            scroll-behavior: smooth;
-            -webkit-text-size-adjust: 100%;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Noto Sans', system-ui, sans-serif;
+            font-family: 'Outfit', system-ui, sans-serif;
             background: var(--md-surface);
             color: var(--md-on-surface);
             line-height: 1.6;
             overflow-x: hidden;
-            transition: background var(--motion-duration-medium) var(--motion-standard),
-                        color var(--motion-duration-medium) var(--motion-standard);
+            transition: background 500ms var(--motion-standard), color 500ms var(--motion-standard);
         }
 
         a { color: var(--md-primary); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        img { max-width: 100%; height: auto; display: block; }
 
-        img { max-width: 100%; height: auto; }
+        .container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 100px 0; position: relative; }
 
-        /* ─── Typography Scale ─── */
-        .display-large  { font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; }
-        .display-medium { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700; line-height: 1.16; letter-spacing: -0.015em; }
-        .headline-large { font-size: clamp(1.5rem, 3.5vw, 2rem); font-weight: 600; line-height: 1.25; }
-        .headline-medium { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 600; line-height: 1.3; }
-        .title-large    { font-size: 1.375rem; font-weight: 600; line-height: 1.35; }
-        .title-medium   { font-size: 1rem; font-weight: 600; line-height: 1.5; letter-spacing: 0.01em; }
-        .body-large     { font-size: 1rem; font-weight: 400; line-height: 1.625; }
-        .body-medium    { font-size: 0.875rem; font-weight: 400; line-height: 1.6; }
-        .label-large    { font-size: 0.875rem; font-weight: 600; line-height: 1.4; letter-spacing: 0.02em; }
-
-        /* ─── Layout ─── */
-        .container {
-            width: 100%;
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 0 24px;
+        /* ══════════════════════════════════════════════════════════════
+           NOISE TEXTURE OVERLAY
+           ══════════════════════════════════════════════════════════════ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.022;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
         }
 
-        section {
-            padding: 80px 0;
-        }
-
-        /* ─── Top App Bar ─── */
+        /* ══════════════════════════════════════════════════════════════
+           TOP APP BAR
+           ══════════════════════════════════════════════════════════════ */
         .top-bar {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -193,14 +175,17 @@
             display: flex;
             align-items: center;
             padding: 0 16px;
-            background: var(--md-surface);
-            transition: background var(--motion-duration-short) var(--motion-standard),
-                        box-shadow var(--motion-duration-short) var(--motion-standard);
+            background: transparent;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            transition: all 400ms var(--motion-standard);
         }
 
         .top-bar.scrolled {
-            background: var(--md-surface-container);
-            box-shadow: var(--elevation-2);
+            background: color-mix(in srgb, var(--md-surface-container) 85%, transparent);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--elevation-1);
         }
 
         .top-bar__inner {
@@ -210,7 +195,6 @@
             width: 100%;
             max-width: 1120px;
             margin: 0 auto;
-            padding: 0 8px;
         }
 
         .top-bar__brand {
@@ -222,21 +206,31 @@
         }
 
         .top-bar__brand img {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: var(--shape-sm);
+            transition: transform 400ms var(--motion-spring);
         }
 
-        .top-bar__brand span {
-            font-size: 1.125rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
+        .top-bar__brand:hover img { transform: scale(1.1) rotate(-4deg); }
+        .top-bar__brand span { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.01em; }
+
+        .top-bar__actions { display: flex; align-items: center; gap: 4px; }
+
+        .top-bar__nav { display: flex; gap: 4px; list-style: none; margin-right: 8px; }
+
+        .top-bar__nav a {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--md-on-surface-variant);
+            border-radius: var(--shape-full);
+            transition: all 250ms var(--motion-standard);
         }
 
-        .top-bar__actions {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        .top-bar__nav a:hover {
+            color: var(--md-on-surface);
+            background: color-mix(in srgb, var(--md-on-surface) 6%, transparent);
+            text-decoration: none;
         }
 
         /* ─── Icon Button ─── */
@@ -244,130 +238,99 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
+            width: 44px; height: 44px;
             border: none;
             border-radius: var(--shape-full);
             background: transparent;
             color: var(--md-on-surface-variant);
             cursor: pointer;
-            transition: background var(--motion-duration-short) var(--motion-standard);
+            transition: all 250ms var(--motion-standard);
             position: relative;
-            overflow: hidden;
         }
 
         .icon-btn:hover {
             background: color-mix(in srgb, var(--md-on-surface) 8%, transparent);
+            color: var(--md-on-surface);
         }
 
-        .icon-btn:active {
-            background: color-mix(in srgb, var(--md-on-surface) 12%, transparent);
-        }
+        .icon-btn svg { width: 22px; height: 22px; }
 
-        .icon-btn svg {
-            width: 24px;
-            height: 24px;
-            transition: transform var(--motion-duration-medium) var(--motion-emphasized);
-        }
-
-        /* Theme toggle icon states */
-        .theme-toggle .icon-sun,
-        .theme-toggle .icon-moon,
-        .theme-toggle .icon-auto {
+        /* Theme toggle */
+        .theme-toggle .t-icon {
             position: absolute;
             opacity: 0;
-            transform: scale(0.5) rotate(-90deg);
-            transition: all var(--motion-duration-medium) var(--motion-emphasized);
+            transform: scale(0.4) rotate(-120deg);
+            transition: all 500ms var(--motion-spring);
         }
 
-        .theme-toggle[data-active-icon="sun"] .icon-sun,
-        .theme-toggle[data-active-icon="moon"] .icon-moon,
-        .theme-toggle[data-active-icon="auto"] .icon-auto {
+        .theme-toggle[data-active="sun"] .t-sun,
+        .theme-toggle[data-active="moon"] .t-moon,
+        .theme-toggle[data-active="auto"] .t-auto {
             opacity: 1;
             transform: scale(1) rotate(0deg);
         }
 
-        /* ─── Buttons (Material You) ─── */
+        /* ══════════════════════════════════════════════════════════════
+           BUTTONS
+           ══════════════════════════════════════════════════════════════ */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             border: none;
             cursor: pointer;
             font-family: inherit;
             font-weight: 600;
-            font-size: 0.875rem;
-            letter-spacing: 0.02em;
+            font-size: 0.9375rem;
+            letter-spacing: 0.01em;
             text-decoration: none;
             border-radius: var(--shape-full);
-            transition: all var(--motion-duration-short) var(--motion-standard);
             position: relative;
             overflow: hidden;
+            transition: all 300ms var(--motion-standard);
         }
 
-        .btn::after {
+        .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+        .btn::before {
             content: '';
             position: absolute;
             inset: 0;
             border-radius: inherit;
             opacity: 0;
-            transition: opacity var(--motion-duration-short) var(--motion-standard);
+            transition: opacity 200ms;
         }
-
-        .btn:hover::after { opacity: 1; }
+        .btn:hover::before { opacity: 1; }
 
         .btn--filled {
             height: 56px;
-            padding: 0 32px;
+            padding: 0 36px;
             background: var(--md-primary);
             color: var(--md-on-primary);
-            box-shadow: var(--elevation-1);
-            font-size: 1rem;
-        }
-
-        .btn--filled:hover {
             box-shadow: var(--elevation-2);
         }
 
-        .btn--filled::after {
-            background: color-mix(in srgb, var(--md-on-primary) 8%, transparent);
-        }
+        .btn--filled:hover { box-shadow: var(--elevation-3); transform: translateY(-2px); }
+        .btn--filled:active { transform: translateY(0); }
+        .btn--filled::before { background: rgba(255,255,255,0.1); }
+        .btn--filled svg { width: 22px; height: 22px; }
 
         .btn--tonal {
-            height: 40px;
-            padding: 0 24px;
+            height: 48px;
+            padding: 0 28px;
             background: var(--md-secondary-container);
             color: var(--md-on-secondary-container);
         }
 
-        .btn--tonal::after {
-            background: color-mix(in srgb, var(--md-on-secondary-container) 8%, transparent);
-        }
+        .btn--tonal:hover { box-shadow: var(--elevation-1); transform: translateY(-1px); }
+        .btn--tonal::before { background: color-mix(in srgb, var(--md-on-secondary-container) 8%, transparent); }
 
-        .btn--outlined {
-            height: 40px;
-            padding: 0 24px;
-            background: transparent;
-            color: var(--md-primary);
-            border: 1px solid var(--md-outline);
-        }
-
-        .btn--outlined:hover {
-            background: color-mix(in srgb, var(--md-primary) 8%, transparent);
-        }
-
-        .btn svg {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-        }
-
-        .btn--filled svg { width: 22px; height: 22px; }
-
-        /* ─── Hero ─── */
+        /* ══════════════════════════════════════════════════════════════
+           HERO
+           ══════════════════════════════════════════════════════════════ */
         .hero {
-            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             align-items: center;
             padding-top: 64px;
@@ -375,79 +338,61 @@
             overflow: hidden;
         }
 
-        .hero__bg {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
+        /* Background */
+        .hero__bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 
-        .hero__bg-orb {
+        .hero__orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.15;
-            animation: orbFloat 20s ease-in-out infinite;
+            filter: blur(120px);
+            will-change: transform;
         }
 
-        .hero__bg-orb--1 {
-            width: 600px; height: 600px;
-            background: var(--md-primary);
-            top: -10%; right: -5%;
-            animation-delay: 0s;
-        }
+        .hero__orb--1 { width: 700px; height: 700px; background: var(--md-primary); opacity: 0.12; top: -15%; right: -10%; }
+        .hero__orb--2 { width: 500px; height: 500px; background: var(--md-tertiary); opacity: 0.08; bottom: -10%; left: -8%; }
+        .hero__orb--3 { width: 350px; height: 350px; background: var(--md-primary-container); opacity: 0.1; top: 35%; left: 45%; }
 
-        .hero__bg-orb--2 {
-            width: 400px; height: 400px;
-            background: var(--md-tertiary);
-            bottom: -5%; left: -5%;
-            animation-delay: -7s;
-        }
-
-        .hero__bg-orb--3 {
-            width: 300px; height: 300px;
-            background: var(--md-secondary);
-            top: 40%; left: 50%;
-            animation-delay: -14s;
-        }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -20px) scale(1.05); }
-            66% { transform: translate(-20px, 15px) scale(0.95); }
+        .hero__grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--md-outline-variant) 1px, transparent 1px),
+                linear-gradient(90deg, var(--md-outline-variant) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: 0.06;
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
         }
 
         .hero__content {
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1.1fr 0.9fr;
             gap: 64px;
             align-items: center;
         }
 
-        .hero__text {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+        .hero__text { display: flex; flex-direction: column; gap: 20px; }
 
+        /* Badge */
         .hero__badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 16px 6px 8px;
+            padding: 6px 18px 6px 10px;
             background: var(--md-secondary-container);
             color: var(--md-on-secondary-container);
             border-radius: var(--shape-full);
             font-size: 0.8125rem;
             font-weight: 500;
             width: fit-content;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 700ms 200ms var(--motion-emphasized) forwards;
         }
 
         .hero__badge__dot {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             background: var(--md-primary);
             animation: pulse 2s ease-in-out infinite;
@@ -455,47 +400,69 @@
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.85); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeUpScale {
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .hero__title {
             color: var(--md-on-surface);
+            font-size: clamp(2.8rem, 6.5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+            opacity: 0; transform: translateY(30px);
+            animation: fadeUp 800ms 350ms var(--motion-emphasized) forwards;
         }
 
         .hero__title em {
             font-style: normal;
-            color: var(--md-primary);
+            background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero__subtitle {
             color: var(--md-on-surface-variant);
-            max-width: 520px;
+            font-size: 1.125rem;
+            line-height: 1.7;
+            max-width: 500px;
+            opacity: 0; transform: translateY(25px);
+            animation: fadeUp 800ms 500ms var(--motion-emphasized) forwards;
         }
 
         .hero__actions {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 8px;
+            align-items: center;
+            gap: 14px;
+            margin-top: 12px;
+            opacity: 0; transform: translateY(25px);
+            animation: fadeUp 800ms 650ms var(--motion-emphasized) forwards;
         }
 
+        /* Stats */
         .hero__stats {
             display: flex;
-            gap: 32px;
-            margin-top: 16px;
-            padding-top: 24px;
+            gap: 36px;
+            margin-top: 20px;
+            padding-top: 28px;
             border-top: 1px solid var(--md-outline-variant);
-        }
-
-        .hero__stat {
-            display: flex;
-            flex-direction: column;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeUp 800ms 800ms var(--motion-emphasized) forwards;
         }
 
         .hero__stat__value {
-            font-size: 1.5rem;
+            font-size: 1.625rem;
             font-weight: 700;
             color: var(--md-on-surface);
+            font-variant-numeric: tabular-nums;
         }
 
         .hero__stat__label {
@@ -504,100 +471,145 @@
             font-weight: 500;
         }
 
-        /* Hero visual */
+        /* ─── Hero Visual ─── */
         .hero__visual {
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            opacity: 0; transform: translateY(40px) scale(0.95);
+            animation: fadeUpScale 1000ms 400ms var(--motion-emphasized) forwards;
         }
 
-        .hero__mockup {
-            position: relative;
-            width: 280px;
-            border-radius: 32px;
+        .hero__phone { position: relative; width: 280px; z-index: 2; }
+
+        .hero__phone-frame {
+            border-radius: 36px;
             overflow: hidden;
-            box-shadow: var(--elevation-3);
-            border: 1px solid var(--md-outline-variant);
+            box-shadow: var(--elevation-4);
+            border: 2px solid var(--md-outline-variant);
             background: var(--md-surface-container);
         }
 
-        .hero__mockup img {
-            width: 100%;
-            display: block;
+        .hero__phone-frame img { width: 100%; }
+
+        /* Shimmer effect on the phone */
+        .hero__phone-frame::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+            animation: shimmer 4s 2s ease-in-out infinite;
         }
 
-        .hero__floating-card {
+        @keyframes shimmer {
+            0% { left: -100%; }
+            40%, 100% { left: 200%; }
+        }
+
+        .hero__phone-glow {
+            position: absolute;
+            width: 320px; height: 400px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse, var(--md-glow-strong) 0%, transparent 70%);
+            z-index: 1;
+            filter: blur(40px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        /* Floating chips */
+        .hero__chip {
             position: absolute;
             background: var(--md-surface-container-high);
-            border-radius: var(--shape-lg);
-            padding: 12px 16px;
-            box-shadow: var(--elevation-2);
+            border: 1px solid var(--md-outline-variant);
+            border-radius: var(--shape-full);
+            padding: 10px 18px 10px 12px;
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 0.8125rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--md-on-surface);
-            animation: floatCard 6s ease-in-out infinite;
-            border: 1px solid var(--md-outline-variant);
+            box-shadow: var(--elevation-2);
             white-space: nowrap;
+            z-index: 3;
+            opacity: 0;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
-        .hero__floating-card--1 {
-            top: 12%; left: -50px;
-            animation-delay: 0s;
+        .hero__chip--1 {
+            top: 8%; left: -60px;
+            animation: chipIn 600ms 900ms var(--motion-spring) forwards, chipFloat 5s 1600ms ease-in-out infinite;
         }
 
-        .hero__floating-card--2 {
-            bottom: 18%; right: -60px;
-            animation-delay: -3s;
+        .hero__chip--2 {
+            bottom: 12%; right: -70px;
+            animation: chipIn 600ms 1100ms var(--motion-spring) forwards, chipFloat 5s 1900ms ease-in-out infinite;
         }
 
-        @keyframes floatCard {
+        .hero__chip--3 {
+            top: 55%; left: -50px;
+            animation: chipIn 600ms 1300ms var(--motion-spring) forwards, chipFloat 5s 2200ms ease-in-out infinite;
+        }
+
+        @keyframes chipIn {
+            from { opacity: 0; transform: translateX(-15px) scale(0.85); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        @keyframes chipFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
         }
 
-        .floating-icon {
-            width: 32px; height: 32px;
-            border-radius: var(--shape-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .chip__icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
 
-        .floating-icon--green { background: color-mix(in srgb, var(--md-primary) 20%, transparent); color: var(--md-primary); }
-        .floating-icon--blue  { background: color-mix(in srgb, var(--md-tertiary) 20%, transparent); color: var(--md-tertiary); }
+        .chip__icon svg { width: 16px; height: 16px; }
+        .chip__icon--teal { background: color-mix(in srgb, var(--md-primary) 18%, transparent); color: var(--md-primary); }
+        .chip__icon--blue { background: color-mix(in srgb, var(--md-tertiary) 18%, transparent); color: var(--md-tertiary); }
+        .chip__icon--warm { background: color-mix(in srgb, var(--md-secondary) 18%, transparent); color: var(--md-secondary); }
 
-        .floating-icon svg { width: 18px; height: 18px; }
-
-        /* ─── Platform Pills ─── */
+        /* ══════════════════════════════════════════════════════════════
+           PLATFORMS BAR
+           ══════════════════════════════════════════════════════════════ */
         .platforms {
             background: var(--md-surface-container-low);
-            padding: 48px 0;
+            padding: 44px 0;
             border-top: 1px solid var(--md-outline-variant);
             border-bottom: 1px solid var(--md-outline-variant);
         }
 
-        .platforms__inner {
+        .platforms__track {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 24px;
+            gap: 16px;
             flex-wrap: wrap;
         }
 
         .platforms__label {
-            font-size: 0.8125rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             color: var(--md-on-surface-variant);
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
+            margin-right: 8px;
         }
 
-        .platform-pill {
+        .platform-chip {
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -608,25 +620,23 @@
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--md-on-surface);
-            transition: all var(--motion-duration-short) var(--motion-standard);
+            transition: all 300ms var(--motion-standard);
         }
 
-        .platform-pill:hover {
+        .platform-chip:hover {
             background: var(--md-surface-container-high);
             box-shadow: var(--elevation-1);
+            transform: translateY(-2px);
         }
 
-        .platform-pill svg { width: 20px; height: 20px; opacity: 0.8; }
+        .platform-chip svg { width: 18px; height: 18px; opacity: 0.75; }
 
-        /* ─── Features Section ─── */
-        .features {
-            background: var(--md-surface);
-        }
+        /* ══════════════════════════════════════════════════════════════
+           FEATURES (3 cards)
+           ══════════════════════════════════════════════════════════════ */
+        .features { background: var(--md-surface); }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 56px;
-        }
+        .section-header { text-align: center; margin-bottom: 60px; }
 
         .section-header__overline {
             font-size: 0.75rem;
@@ -634,102 +644,133 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--md-primary);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .section-header__title {
+            font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+            font-weight: 700;
             color: var(--md-on-surface);
-            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
         }
 
         .section-header__subtitle {
             color: var(--md-on-surface-variant);
-            max-width: 600px;
+            font-size: 1.0625rem;
+            max-width: 560px;
             margin: 0 auto;
+            line-height: 1.7;
         }
 
         .features__grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
         .feature-card {
             background: var(--md-surface-container-low);
             border: 1px solid var(--md-outline-variant);
             border-radius: var(--shape-xl);
-            padding: 32px 28px;
-            transition: all var(--motion-duration-medium) var(--motion-emphasized);
+            padding: 40px 32px;
+            transition: all 500ms var(--motion-emphasized);
+            position: relative;
+            overflow: hidden;
         }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 500ms var(--motion-standard);
+        }
+
+        .feature-card:nth-child(1)::after { background: radial-gradient(circle, var(--md-glow-strong), transparent 70%); }
+        .feature-card:nth-child(2)::after { background: radial-gradient(circle, color-mix(in srgb, var(--md-secondary) 15%, transparent), transparent 70%); }
+        .feature-card:nth-child(3)::after { background: radial-gradient(circle, color-mix(in srgb, var(--md-tertiary) 15%, transparent), transparent 70%); }
 
         .feature-card:hover {
-            background: var(--md-surface-container);
-            box-shadow: var(--elevation-1);
-            transform: translateY(-4px);
+            transform: translateY(-8px);
+            box-shadow: var(--elevation-3);
+            border-color: var(--md-outline);
         }
 
+        .feature-card:hover::after { opacity: 1; }
+
         .feature-card__icon {
-            width: 52px;
-            height: 52px;
-            border-radius: var(--shape-lg);
+            width: 60px; height: 60px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            background: var(--md-primary-container);
-            color: var(--md-on-primary-container);
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+            transition: transform 400ms var(--motion-spring);
         }
 
-        .feature-card__icon svg { width: 26px; height: 26px; }
+        .feature-card:hover .feature-card__icon { transform: scale(1.1) rotate(-3deg); }
+
+        .feature-card__icon svg { width: 28px; height: 28px; }
+
+        .feature-card:nth-child(1) .feature-card__icon { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+        .feature-card:nth-child(2) .feature-card__icon { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+        .feature-card:nth-child(3) .feature-card__icon { background: var(--md-tertiary-container); color: var(--md-on-tertiary); }
 
         .feature-card__title {
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--md-on-surface);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+            position: relative; z-index: 1;
         }
 
         .feature-card__desc {
+            font-size: 0.9375rem;
             color: var(--md-on-surface-variant);
+            line-height: 1.7;
+            position: relative; z-index: 1;
         }
 
-        /* Alternate icon colors */
-        .feature-card:nth-child(2) .feature-card__icon {
-            background: var(--md-secondary-container);
-            color: var(--md-on-secondary-container);
-        }
-        .feature-card:nth-child(3) .feature-card__icon {
-            background: var(--md-tertiary-container);
-            color: var(--md-on-tertiary);
-        }
-        .feature-card:nth-child(4) .feature-card__icon {
-            background: var(--md-tertiary-container);
-            color: var(--md-on-tertiary);
-        }
-        .feature-card:nth-child(5) .feature-card__icon {
-            background: var(--md-secondary-container);
-            color: var(--md-on-secondary-container);
-        }
-
-        /* ─── How It Works ─── */
-        .how-it-works {
-            background: var(--md-surface-container-low);
-        }
+        /* ══════════════════════════════════════════════════════════════
+           HOW IT WORKS
+           ══════════════════════════════════════════════════════════════ */
+        .how-it-works { background: var(--md-surface-container-low); }
 
         .steps {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
+            gap: 28px;
             position: relative;
         }
 
-        .steps::before {
-            content: '';
+        .steps__line {
             position: absolute;
-            top: 36px;
-            left: calc(12.5% + 24px);
-            right: calc(12.5% + 24px);
+            top: 44px;
+            left: calc(12.5% + 20px);
+            right: calc(12.5% + 20px);
             height: 2px;
             background: var(--md-outline-variant);
+            z-index: 0;
+            overflow: hidden;
         }
+
+        .steps__line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--md-primary), var(--md-tertiary));
+            transition: width 1800ms var(--motion-emphasized);
+        }
+
+        .steps__line.animate::after { width: 100%; }
 
         .step {
             display: flex;
@@ -738,77 +779,149 @@
             text-align: center;
             gap: 16px;
             position: relative;
-        }
-
-        .step__number {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: var(--md-primary-container);
-            color: var(--md-on-primary-container);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            font-weight: 700;
             z-index: 1;
         }
 
-        .step__title {
-            color: var(--md-on-surface);
-        }
-
-        .step__desc {
+        .step__number {
+            width: 88px; height: 88px;
+            border-radius: 50%;
+            background: var(--md-surface-container-lowest);
+            border: 2.5px solid var(--md-outline-variant);
             color: var(--md-on-surface-variant);
-            max-width: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            transition: all 700ms var(--motion-spring);
+            position: relative;
         }
 
-        /* ─── Get Listed ─── */
-        .get-listed {
-            background: var(--md-surface);
+        /* Animated ring on activation */
+        .step__number::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid var(--md-primary);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 600ms var(--motion-spring);
         }
+
+        .step.active .step__number {
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            border-color: var(--md-primary);
+            transform: scale(1.08);
+            box-shadow: 0 0 0 8px var(--md-glow), var(--elevation-2);
+        }
+
+        .step.active .step__number::after {
+            opacity: 0.4;
+            transform: scale(1);
+        }
+
+        .step__title { font-size: 1.0625rem; font-weight: 700; color: var(--md-on-surface); }
+        .step__desc { font-size: 0.875rem; color: var(--md-on-surface-variant); max-width: 200px; line-height: 1.65; }
+
+        /* ══════════════════════════════════════════════════════════════
+           GET LISTED
+           ══════════════════════════════════════════════════════════════ */
+        .get-listed { background: var(--md-surface); }
 
         .get-listed__card {
             background: var(--md-primary-container);
-            border-radius: var(--shape-xl);
-            padding: 56px;
+            border-radius: 32px;
+            padding: 64px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 48px;
+            gap: 56px;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .get-listed__card::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            border: 40px solid color-mix(in srgb, var(--md-primary) 12%, transparent);
+            animation: rotateRing 30s linear infinite;
+        }
+
+        .get-listed__card::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; left: -60px;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            border: 30px solid color-mix(in srgb, var(--md-primary) 8%, transparent);
+            animation: rotateRing 25s linear infinite reverse;
+        }
+
+        @keyframes rotateRing {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .get-listed__title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
             color: var(--md-on-primary-container);
             margin-bottom: 16px;
+            letter-spacing: -0.02em;
+            position: relative;
         }
 
         .get-listed__desc {
+            font-size: 1rem;
             color: var(--md-on-primary-container);
             opacity: 0.85;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+            position: relative;
         }
 
-        .checklist {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
+        .get-listed__btn {
+            position: relative;
+            height: 48px;
+            padding: 0 28px;
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            border: none;
+            border-radius: var(--shape-full);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 300ms var(--motion-standard);
         }
+
+        .get-listed__btn:hover { box-shadow: var(--elevation-2); transform: translateY(-2px); }
+        .get-listed__btn svg { width: 20px; height: 20px; }
+
+        .checklist { list-style: none; display: flex; flex-direction: column; gap: 18px; position: relative; }
 
         .checklist li {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
+            gap: 14px;
             font-size: 0.9375rem;
             font-weight: 500;
             color: var(--md-on-primary-container);
+            line-height: 1.5;
         }
 
-        .checklist__icon {
+        .check-icon {
             flex-shrink: 0;
-            width: 24px;
-            height: 24px;
+            width: 26px; height: 26px;
             border-radius: 50%;
             background: var(--md-primary);
             color: var(--md-on-primary);
@@ -816,43 +929,67 @@
             align-items: center;
             justify-content: center;
             margin-top: 1px;
+            transition: transform 400ms var(--motion-spring);
         }
 
-        .checklist__icon svg { width: 14px; height: 14px; }
+        .checklist li:hover .check-icon { transform: scale(1.15); }
 
-        /* ─── CTA Banner ─── */
+        .check-icon svg { width: 14px; height: 14px; }
+
+        /* ══════════════════════════════════════════════════════════════
+           CTA
+           ══════════════════════════════════════════════════════════════ */
         .cta {
             background: var(--md-surface-container-low);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .cta__inner {
-            max-width: 640px;
-            margin: 0 auto;
+        .cta__glow {
+            position: absolute;
+            width: 600px; height: 600px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--md-glow-strong), transparent 65%);
+            filter: blur(80px);
+            pointer-events: none;
+            animation: glowPulse 5s ease-in-out infinite;
         }
+
+        .cta__inner { max-width: 640px; margin: 0 auto; position: relative; }
 
         .cta__title {
+            font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+            font-weight: 700;
             color: var(--md-on-surface);
             margin-bottom: 16px;
+            letter-spacing: -0.02em;
         }
 
         .cta__desc {
+            font-size: 1.0625rem;
             color: var(--md-on-surface-variant);
-            margin-bottom: 32px;
+            margin-bottom: 36px;
+            line-height: 1.7;
         }
 
         .cta__buttons {
             display: flex;
             justify-content: center;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
         }
 
-        /* ─── Footer ─── */
+        /* ══════════════════════════════════════════════════════════════
+           FOOTER
+           ══════════════════════════════════════════════════════════════ */
         .footer {
             background: var(--md-surface-container);
             border-top: 1px solid var(--md-outline-variant);
-            padding: 40px 0;
+            padding: 44px 0;
         }
 
         .footer__inner {
@@ -871,114 +1008,92 @@
             font-weight: 600;
         }
 
-        .footer__brand img {
-            width: 28px;
-            height: 28px;
-            border-radius: var(--shape-xs);
-        }
+        .footer__brand img { width: 28px; height: 28px; border-radius: var(--shape-sm); }
 
-        .footer__links {
-            display: flex;
-            gap: 24px;
-            list-style: none;
-        }
+        .footer__links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
 
         .footer__links a {
             font-size: 0.875rem;
             color: var(--md-on-surface-variant);
-            transition: color var(--motion-duration-short) var(--motion-standard);
+            transition: color 200ms;
         }
 
-        .footer__links a:hover {
-            color: var(--md-primary);
-            text-decoration: none;
-        }
+        .footer__links a:hover { color: var(--md-primary); text-decoration: none; }
 
-        .footer__copy {
+        .footer__bottom {
             width: 100%;
             text-align: center;
-            margin-top: 24px;
+            margin-top: 28px;
             padding-top: 24px;
             border-top: 1px solid var(--md-outline-variant);
             font-size: 0.8125rem;
             color: var(--md-on-surface-variant);
+            line-height: 1.8;
         }
 
-        /* ─── Scroll Reveal ─── */
+        .footer__bottom a { color: var(--md-primary); }
+        .footer__legal { opacity: 0.6; font-size: 0.75rem; }
+
+        /* ══════════════════════════════════════════════════════════════
+           SCROLL REVEAL
+           ══════════════════════════════════════════════════════════════ */
         .reveal {
             opacity: 0;
-            transform: translateY(32px);
-            transition: opacity var(--motion-duration-long) var(--motion-emphasized),
-                        transform var(--motion-duration-long) var(--motion-emphasized);
+            transform: translateY(40px);
+            transition: opacity 800ms var(--motion-emphasized), transform 800ms var(--motion-emphasized);
         }
 
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .reveal-stagger > *:nth-child(1) { transition-delay: 0ms; }
+        .reveal-stagger > *:nth-child(2) { transition-delay: 150ms; }
+        .reveal-stagger > *:nth-child(3) { transition-delay: 300ms; }
+        .reveal-stagger > *:nth-child(4) { transition-delay: 450ms; }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 800ms var(--motion-emphasized), transform 800ms var(--motion-emphasized);
         }
 
-        /* Stagger children */
-        .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
-        .reveal-stagger > .reveal:nth-child(2) { transition-delay: 80ms; }
-        .reveal-stagger > .reveal:nth-child(3) { transition-delay: 160ms; }
-        .reveal-stagger > .reveal:nth-child(4) { transition-delay: 240ms; }
-        .reveal-stagger > .reveal:nth-child(5) { transition-delay: 320ms; }
-        .reveal-stagger > .reveal:nth-child(6) { transition-delay: 400ms; }
+        .reveal-scale.visible { opacity: 1; transform: scale(1); }
 
-        /* ─── Responsive ─── */
+        /* ══════════════════════════════════════════════════════════════
+           RESPONSIVE
+           ══════════════════════════════════════════════════════════════ */
         @media (max-width: 960px) {
-            .hero__content {
-                grid-template-columns: 1fr;
-                gap: 48px;
-                text-align: center;
-            }
+            .hero__content { grid-template-columns: 1fr; gap: 48px; text-align: center; }
             .hero__subtitle { margin: 0 auto; }
             .hero__actions { justify-content: center; }
             .hero__stats { justify-content: center; }
             .hero__visual { order: -1; }
-            .hero__mockup { width: 220px; }
-            .hero__floating-card--1 { left: -20px; }
-            .hero__floating-card--2 { right: -20px; }
+            .hero__phone { width: 220px; }
 
-            .features__grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .features__grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
 
-            .steps {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 32px;
-            }
-            .steps::before { display: none; }
+            .steps { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+            .steps__line { display: none; }
 
-            .get-listed__card {
-                grid-template-columns: 1fr;
-                padding: 40px 32px;
-            }
+            .get-listed__card { grid-template-columns: 1fr; padding: 44px 32px; }
+            .top-bar__nav { display: none; }
         }
 
         @media (max-width: 640px) {
-            section { padding: 56px 0; }
+            section { padding: 72px 0; }
             .container { padding: 0 16px; }
-
-            .features__grid {
-                grid-template-columns: 1fr;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-            }
-
-            .hero__floating-card { display: none; }
-
+            .hero__chip { display: none; }
             .hero__stats { gap: 20px; }
-
+            .hero__phone { width: 200px; }
+            .steps { grid-template-columns: 1fr; }
             .get-listed__card { padding: 32px 24px; }
+            .hero__actions { flex-direction: column; align-items: center; width: 100%; }
+            .hero__actions .btn { width: 100%; max-width: 300px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ─── Top App Bar ─── -->
+    <!-- ═══ Top App Bar ═══ -->
     <header class="top-bar" id="topBar">
         <div class="top-bar__inner">
             <a href="/" class="top-bar__brand">
@@ -986,27 +1101,30 @@
                 <span>GitHub Store</span>
             </a>
             <div class="top-bar__actions">
-                <a href="https://github.com/rainxchzed/Github-Store" class="icon-btn" title="View on GitHub" aria-label="GitHub repository" target="_blank" rel="noopener">
+                <ul class="top-bar__nav">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#developers">Developers</a></li>
+                </ul>
+                <a href="https://github.com/rainxchzed/Github-Store" class="icon-btn" title="GitHub" aria-label="GitHub repository" target="_blank" rel="noopener">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
                 </a>
-                <button class="icon-btn theme-toggle" id="themeToggle" data-active-icon="auto" title="Toggle theme" aria-label="Toggle color theme">
-                    <!-- Sun -->
-                    <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
-                    <!-- Moon -->
-                    <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
-                    <!-- Auto -->
-                    <svg class="icon-auto" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18V4c4.41 0 8 3.59 8 8s-3.59 8-8 8z"/></svg>
+                <button class="icon-btn theme-toggle" id="themeToggle" data-active="auto" title="Theme: auto" aria-label="Toggle color theme">
+                    <svg class="t-icon t-sun" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 0 0-1.41 0 .996.996 0 0 0 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 0 0 0-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 0 0 0-1.41.996.996 0 0 0-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+                    <svg class="t-icon t-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+                    <svg class="t-icon t-auto" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18V4c4.41 0 8 3.59 8 8s-3.59 8-8 8z"/></svg>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- ─── Hero ─── -->
+    <!-- ═══ Hero ═══ -->
     <section class="hero">
         <div class="hero__bg">
-            <div class="hero__bg-orb hero__bg-orb--1"></div>
-            <div class="hero__bg-orb hero__bg-orb--2"></div>
-            <div class="hero__bg-orb hero__bg-orb--3"></div>
+            <div class="hero__grid"></div>
+            <div class="hero__orb hero__orb--1"></div>
+            <div class="hero__orb hero__orb--2"></div>
+            <div class="hero__orb hero__orb--3"></div>
         </div>
         <div class="container">
             <div class="hero__content">
@@ -1015,11 +1133,9 @@
                         <span class="hero__badge__dot"></span>
                         Open Source &amp; Free Forever
                     </div>
-                    <h1 class="display-large hero__title">
-                        The app store for<br><em>GitHub releases</em>
-                    </h1>
-                    <p class="body-large hero__subtitle">
-                        Discover, install, and update open-source software directly from GitHub. One-click installs for Android, Windows, macOS, and Linux — no hunting through release pages.
+                    <h1 class="hero__title">The app store for<br><em>GitHub releases</em></h1>
+                    <p class="hero__subtitle">
+                        Discover, install, and update open-source software directly from GitHub. One-click installs for Android, Windows, macOS, and Linux — no more hunting through release pages.
                     </p>
                     <div class="hero__actions">
                         <a href="https://github.com/rainxchzed/Github-Store/releases/latest" class="btn btn--filled" target="_blank" rel="noopener">
@@ -1033,212 +1149,154 @@
                     </div>
                     <div class="hero__stats">
                         <div class="hero__stat">
-                            <span class="hero__stat__value">55K+</span>
+                            <span class="hero__stat__value" data-count="58000" data-suffix="+">0</span>
                             <span class="hero__stat__label">Active Users</span>
                         </div>
                         <div class="hero__stat">
-                            <span class="hero__stat__value">6.5K+</span>
+                            <span class="hero__stat__value" data-count="6500" data-suffix="+">0</span>
                             <span class="hero__stat__label">GitHub Stars</span>
                         </div>
                         <div class="hero__stat">
-                            <span class="hero__stat__value">4</span>
+                            <span class="hero__stat__value" data-count="4" data-suffix="">0</span>
                             <span class="hero__stat__label">Platforms</span>
                         </div>
                     </div>
                 </div>
                 <div class="hero__visual">
-                    <div class="hero__floating-card hero__floating-card--1">
-                        <span class="floating-icon floating-icon--green">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
-                        </span>
+                    <div class="hero__phone-glow"></div>
+                    <div class="hero__chip hero__chip--1">
+                        <span class="chip__icon chip__icon--teal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg></span>
                         One-click install
                     </div>
-                    <div class="hero__mockup">
-                        <img src="https://raw.githubusercontent.com/rainxchzed/Github-Store/main/screenshots/01.jpg" alt="GitHub Store app screenshot" loading="eager">
+                    <div class="hero__chip hero__chip--2">
+                        <span class="chip__icon chip__icon--blue"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></span>
+                        Update available
                     </div>
-                    <div class="hero__floating-card hero__floating-card--2">
-                        <span class="floating-icon floating-icon--blue">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                        </span>
-                        Update tracking
+                    <div class="hero__chip hero__chip--3">
+                        <span class="chip__icon chip__icon--warm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+                        5.5K+ stars
+                    </div>
+                    <div class="hero__phone">
+                        <div class="hero__phone-frame">
+                            <img src="https://raw.githubusercontent.com/rainxchzed/Github-Store/main/screenshots/01.jpg" alt="GitHub Store app" loading="eager">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ─── Platforms ─── -->
+    <!-- ═══ Platforms ═══ -->
     <div class="platforms">
         <div class="container">
-            <div class="platforms__inner">
+            <div class="platforms__track">
                 <span class="platforms__label">Available on</span>
-                <span class="platform-pill">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2l-5.478 9.483h-.049L6.477 2H2.192l7.711 12.218L2 22h4.357l5.737-9.832h.049L17.856 22h4.336l-8.039-12.14L22 2z"/></svg>
-                    Android
-                </span>
-                <span class="platform-pill">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12V6.75l6-1.32v6.48L3 12zm17-9v8.75l-10 .15V5.21L20 3zM3 13l6 .09v6.81l-6-1.15V13zm7 .25V20.1l10 1.9V13.4l-10-.15z"/></svg>
-                    Windows
-                </span>
-                <span class="platform-pill">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.37 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    macOS
-                </span>
-                <span class="platform-pill">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.311.002-.465.014C8.51.147 5.352 2.396 3.65 5.616c-1.7 3.22-1.663 7.16.241 10.283C5.742 18.82 8.79 20.832 12.104 21c.157.005.313.008.467.008 3.17 0 6.093-1.696 7.78-4.403 1.686-2.707 1.898-6.12.562-9.073-1.337-2.953-4.068-5.03-7.244-5.517A11.3 11.3 0 0 0 12.504 0zm-1.4 2.08c.477-.048.96-.06 1.443-.035 2.305.16 4.378 1.52 5.598 3.482l-4.082 2.355-3.96-2.291C11.28 3.79 12.267 2.75 13.5 2.6c-.132-.019-.265-.03-.396-.035zm-2.28.67C8.61 3.7 7.712 5.033 7.15 6.539l-4.07-2.349C4.66 2.4 6.73 1.58 8.824 1.77c0 0 0 .98 0 .98zm-2.7 5.22 4.141 2.392-4.09 2.36C4.05 12.035 3.12 10.946 2.58 9.66l3.544-2.05v.36zm5.36 3.08 4.16-2.4c.8 1.65.93 3.58.34 5.32l-4.5-2.6v-.32zm4.56-3.4-4.06-2.34 4.04-2.33c.94 1.47 1.37 3.25 1.2 5.01l-1.18-.34zm-5.38-2.98L7.7 6.99C8.14 5.72 8.86 4.6 9.82 3.73l2.84 1.64v.3zm-5.36 6.78 4.04 2.34-2.4 1.39c-1.16-.7-2.1-1.72-2.73-2.92l1.09-.81zm5.38 2.98-4.06 2.34c-.63-1.29-1.43-3.69-.83-5.42l4.89 2.83v.25zm.96.56 4.05 2.34c-.92 1.51-2.31 2.67-3.93 3.3l-.12-5.64zm4.87 1.67-4.06-2.34L16.5 14l.07.01c.62 1.32.44 3.06-.26 4.43z"/></svg>
-                    Linux
-                </span>
+                <span class="platform-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2l-5.478 9.483h-.049L6.477 2H2.192l7.711 12.218L2 22h4.357l5.737-9.832h.049L17.856 22h4.336l-8.039-12.14L22 2z"/></svg> Android</span>
+                <span class="platform-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 12V6.75l6-1.32v6.48L3 12zm17-9v8.75l-10 .15V5.21L20 3zM3 13l6 .09v6.81l-6-1.15V13zm7 .25V20.1l10 1.9V13.4l-10-.15z"/></svg> Windows</span>
+                <span class="platform-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.37 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg> macOS</span>
+                <span class="platform-chip"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.311.002-.465.014C8.51.147 5.352 2.396 3.65 5.616c-1.7 3.22-1.663 7.16.241 10.283C5.742 18.82 8.79 20.832 12.104 21c.157.005.313.008.467.008 3.17 0 6.093-1.696 7.78-4.403 1.686-2.707 1.898-6.12.562-9.073-1.337-2.953-4.068-5.03-7.244-5.517A11.3 11.3 0 0 0 12.504 0z"/></svg> Linux</span>
             </div>
         </div>
     </div>
 
-    <!-- ─── Features ─── -->
+    <!-- ═══ Features ═══ -->
     <section class="features" id="features">
         <div class="container">
             <div class="section-header reveal">
                 <p class="section-header__overline">Features</p>
-                <h2 class="headline-large section-header__title">Everything you need, nothing you don't</h2>
-                <p class="body-large section-header__subtitle">
-                    GitHub Store strips away the complexity of finding and installing open-source software.
-                </p>
+                <h2 class="section-header__title">Everything you need, nothing you don't</h2>
+                <p class="section-header__subtitle">GitHub Store strips away the complexity of finding and installing open-source software.</p>
             </div>
             <div class="features__grid reveal-stagger">
                 <div class="feature-card reveal">
                     <div class="feature-card__icon">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                     </div>
-                    <h3 class="title-large feature-card__title">Smart Discovery</h3>
-                    <p class="body-medium feature-card__desc">
-                        Browse trending, recently updated, and new projects. Only repos with real installable binaries for your platform are shown — no source-only noise.
-                    </p>
+                    <h3 class="feature-card__title">Smart Discovery</h3>
+                    <p class="feature-card__desc">Browse trending, hot releases, and most popular repos. Only apps with real installable binaries for your platform are shown — zero source-only noise.</p>
                 </div>
                 <div class="feature-card reveal">
                     <div class="feature-card__icon">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
                     </div>
-                    <h3 class="title-large feature-card__title">One-Click Installs</h3>
-                    <p class="body-medium feature-card__desc">
-                        Tap "Install" and the right binary is downloaded and handed to your OS installer. APK on Android, EXE/MSI on Windows, DMG on macOS, AppImage/DEB on Linux.
-                    </p>
+                    <h3 class="feature-card__title">One-Click Installs</h3>
+                    <p class="feature-card__desc">Tap install and the correct binary downloads and hands off to your OS — APK on Android, EXE on Windows, DMG on macOS, AppImage or DEB on Linux.</p>
                 </div>
                 <div class="feature-card reveal">
                     <div class="feature-card__icon">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 10.12h-6.78l2.74-2.82c-2.73-2.7-7.15-2.8-9.88-.1-2.73 2.71-2.73 7.08 0 9.79s7.15 2.71 9.88 0C18.32 15.65 19 14.08 19 12.1h2c0 1.98-.88 4.55-2.64 6.29-3.51 3.48-9.21 3.48-12.72 0-3.5-3.47-3.53-9.11-.02-12.58s9.14-3.49 12.65 0L21 3v7.12zM12.5 8v4.25l3.5 2.08-.72 1.21L11 13V8h1.5z"/></svg>
                     </div>
-                    <h3 class="title-large feature-card__title">Update Tracking</h3>
-                    <p class="body-medium feature-card__desc">
-                        GitHub Store remembers what you installed and highlights when new releases drop. Stay up-to-date without checking GitHub manually.
-                    </p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-card__icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-                    </div>
-                    <h3 class="title-large feature-card__title">Always Latest &amp; Stable</h3>
-                    <p class="body-medium feature-card__desc">
-                        Installs always come from the latest published, non-draft, non-prerelease version. The changelog you read is exactly what you're getting.
-                    </p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-card__icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
-                    </div>
-                    <h3 class="title-large feature-card__title">Open Source</h3>
-                    <p class="body-medium feature-card__desc">
-                        Built with Kotlin Multiplatform and Compose. No ads, no tracking, no premium gates. Fork it, extend it, or contribute — it's Apache 2.0 licensed.
-                    </p>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-card__icon">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                    </div>
-                    <h3 class="title-large feature-card__title">Rich App Details</h3>
-                    <p class="body-medium feature-card__desc">
-                        Every listing shows stars, forks, rendered README, release notes with markdown formatting, and a full list of downloadable assets with sizes.
-                    </p>
+                    <h3 class="feature-card__title">Update Tracking</h3>
+                    <p class="feature-card__desc">Remembers what you installed and highlights new releases automatically. Stay current without manually checking GitHub repos ever again.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ─── How It Works ─── -->
+    <!-- ═══ How It Works ═══ -->
     <section class="how-it-works" id="how-it-works">
         <div class="container">
             <div class="section-header reveal">
                 <p class="section-header__overline">How It Works</p>
-                <h2 class="headline-large section-header__title">From discovery to install in seconds</h2>
+                <h2 class="section-header__title">From discovery to install in seconds</h2>
             </div>
-            <div class="steps reveal-stagger">
+            <div class="steps reveal-stagger" id="stepsContainer">
+                <div class="steps__line" id="stepsLine"></div>
                 <div class="step reveal">
                     <div class="step__number">1</div>
-                    <h3 class="title-medium step__title">Browse</h3>
-                    <p class="body-medium step__desc">Explore trending, new, and popular apps curated for your platform.</p>
+                    <h3 class="step__title">Browse</h3>
+                    <p class="step__desc">Explore trending, new, and popular apps curated for your platform.</p>
                 </div>
                 <div class="step reveal">
                     <div class="step__number">2</div>
-                    <h3 class="title-medium step__title">Discover</h3>
-                    <p class="body-medium step__desc">Read READMEs, changelogs, and see stats — all in a clean interface.</p>
+                    <h3 class="step__title">Discover</h3>
+                    <p class="step__desc">Read READMEs, changelogs, and stats — all in one clean interface.</p>
                 </div>
                 <div class="step reveal">
                     <div class="step__number">3</div>
-                    <h3 class="title-medium step__title">Install</h3>
-                    <p class="body-medium step__desc">One tap downloads the right binary and hands it to your OS installer.</p>
+                    <h3 class="step__title">Install</h3>
+                    <p class="step__desc">One tap downloads the right binary and hands it to your OS installer.</p>
                 </div>
                 <div class="step reveal">
                     <div class="step__number">4</div>
-                    <h3 class="title-medium step__title">Stay Updated</h3>
-                    <p class="body-medium step__desc">Get notified when new releases arrive and update with a single tap.</p>
+                    <h3 class="step__title">Stay Updated</h3>
+                    <p class="step__desc">New release notifications — update with a single tap, every time.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ─── Get Listed ─── -->
+    <!-- ═══ Get Listed ═══ -->
     <section class="get-listed" id="developers">
         <div class="container">
-            <div class="get-listed__card reveal">
+            <div class="get-listed__card reveal-scale">
                 <div>
-                    <h2 class="headline-large get-listed__title">Get your app listed</h2>
-                    <p class="body-large get-listed__desc">
-                        GitHub Store uses the public GitHub Search API — no manual submission required. If your project meets these conditions, it appears automatically.
-                    </p>
-                    <a href="https://github.com/rainxchzed/Github-Store/wiki" class="btn btn--outlined" target="_blank" rel="noopener" style="border-color: var(--md-on-primary-container); color: var(--md-on-primary-container);">
+                    <h2 class="get-listed__title">Get your app listed</h2>
+                    <p class="get-listed__desc">No manual submission needed. GitHub Store uses the public Search API — if your project meets these conditions, it appears automatically.</p>
+                    <a href="https://github.com/rainxchzed/Github-Store/wiki" class="get-listed__btn" target="_blank" rel="noopener">
                         Read the Wiki
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
                     </a>
                 </div>
                 <div>
                     <ul class="checklist">
-                        <li>
-                            <span class="checklist__icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>
-                            Public repository on GitHub
-                        </li>
-                        <li>
-                            <span class="checklist__icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>
-                            At least one published, non-draft release
-                        </li>
-                        <li>
-                            <span class="checklist__icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>
-                            Installable assets: .apk, .exe, .msi, .dmg, .pkg, .deb, .rpm, or .AppImage
-                        </li>
-                        <li>
-                            <span class="checklist__icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>
-                            Relevant topics and description for better discoverability
-                        </li>
+                        <li><span class="check-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> Public repository on GitHub</li>
+                        <li><span class="check-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> At least one published, non-draft release</li>
+                        <li><span class="check-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> Installable assets (.apk, .exe, .msi, .dmg, .pkg, .deb, .rpm, .AppImage)</li>
+                        <li><span class="check-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> Relevant topics and description for discoverability</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ─── CTA ─── -->
+    <!-- ═══ CTA ═══ -->
     <section class="cta">
+        <div class="cta__glow"></div>
         <div class="container">
             <div class="cta__inner reveal">
-                <h2 class="headline-large cta__title">Ready to try GitHub Store?</h2>
-                <p class="body-large cta__desc">
-                    100% free, no ads, no tracking. Join 55,000+ users who already discover and install open-source software the easy way.
-                </p>
+                <h2 class="cta__title">Ready to try GitHub Store?</h2>
+                <p class="cta__desc">100% free, no ads, no tracking. Join 55,000+ users who discover and install open-source software the easy way.</p>
                 <div class="cta__buttons">
                     <a href="https://github.com/rainxchzed/Github-Store/releases/latest" class="btn btn--filled" target="_blank" rel="noopener">
                         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
@@ -1252,7 +1310,7 @@
         </div>
     </section>
 
-    <!-- ─── Footer ─── -->
+    <!-- ═══ Footer ═══ -->
     <footer class="footer">
         <div class="container">
             <div class="footer__inner">
@@ -1264,72 +1322,106 @@
                     <li><a href="https://github.com/rainxchzed/Github-Store" target="_blank" rel="noopener">Source Code</a></li>
                     <li><a href="https://github.com/rainxchzed/Github-Store/wiki" target="_blank" rel="noopener">Wiki</a></li>
                     <li><a href="https://github.com/rainxchzed/Github-Store/releases" target="_blank" rel="noopener">Releases</a></li>
-                    <li><a href="https://github-store.org/privacy-policy/" rel="noopener">Privacy Policy</a></li>
+                    <li><a href="https://github-store.org/privacy-policy/">Privacy Policy</a></li>
                     <li><a href="https://www.buymeacoffee.com/rainxchzed" target="_blank" rel="noopener">Support ☕</a></li>
                 </ul>
-                <p class="footer__copy">
+                <div class="footer__bottom">
                     © 2025 GitHub Store by <a href="https://github.com/rainxchzed" target="_blank" rel="noopener">rainxchzed</a>. Apache License 2.0.
-                    <br>
-                    <span style="opacity:0.7; font-size: 0.75rem;">GitHub® is a registered trademark of GitHub, Inc. This project is not affiliated with GitHub.</span>
-                </p>
+                    <br><span class="footer__legal">GitHub® is a registered trademark of GitHub, Inc. This project is not affiliated with GitHub.</span>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // ─── Theme Toggle ───
-        const themeToggle = document.getElementById('themeToggle');
+    (() => {
+        /* ─── Theme Toggle ─── */
+        const toggle = document.getElementById('themeToggle');
         const html = document.documentElement;
-        const themeOrder = ['auto', 'light', 'dark'];
-        let currentThemeIndex = 0;
-
-        // Restore saved preference
-        const saved = localStorage.getItem('theme');
-        if (saved && themeOrder.includes(saved)) {
-            currentThemeIndex = themeOrder.indexOf(saved);
-            html.dataset.theme = saved;
-        }
-        updateToggleIcon();
-
-        themeToggle.addEventListener('click', () => {
-            currentThemeIndex = (currentThemeIndex + 1) % themeOrder.length;
-            const theme = themeOrder[currentThemeIndex];
-            html.dataset.theme = theme;
-            localStorage.setItem('theme', theme);
-            updateToggleIcon();
+        const cycle = ['auto', 'light', 'dark'];
+        let idx = 0;
+        const saved = localStorage.getItem('gs-theme');
+        if (saved && cycle.includes(saved)) { idx = cycle.indexOf(saved); html.dataset.theme = saved; }
+        syncIcon();
+        toggle.addEventListener('click', () => {
+            idx = (idx + 1) % cycle.length;
+            html.dataset.theme = cycle[idx];
+            localStorage.setItem('gs-theme', cycle[idx]);
+            syncIcon();
         });
-
-        function updateToggleIcon() {
-            const theme = themeOrder[currentThemeIndex];
-            const iconMap = { auto: 'auto', light: 'sun', dark: 'moon' };
-            themeToggle.dataset.activeIcon = iconMap[theme];
-            themeToggle.title = `Theme: ${theme} (click to change)`;
+        function syncIcon() {
+            const map = { auto: 'auto', light: 'sun', dark: 'moon' };
+            toggle.dataset.active = map[cycle[idx]];
+            toggle.title = `Theme: ${cycle[idx]}`;
         }
 
-        // ─── Top Bar Scroll ───
-        const topBar = document.getElementById('topBar');
+        /* ─── Top Bar Scroll ─── */
+        const bar = document.getElementById('topBar');
         let ticking = false;
         window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    topBar.classList.toggle('scrolled', window.scrollY > 16);
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
+            if (!ticking) { requestAnimationFrame(() => { bar.classList.toggle('scrolled', scrollY > 24); ticking = false; }); ticking = true; }
+        }, { passive: true });
 
-        // ─── Scroll Reveal ───
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+        /* ─── Scroll Reveal ─── */
+        const revealObs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal, .reveal-scale').forEach(el => revealObs.observe(el));
+
+        /* ─── Steps Timeline ─── */
+        const stepsC = document.getElementById('stepsContainer');
+        const stepsLine = document.getElementById('stepsLine');
+        const steps = stepsC.querySelectorAll('.step');
+        const stepsObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    stepsLine.classList.add('animate');
+                    steps.forEach((s, i) => setTimeout(() => s.classList.add('active'), 400 + i * 400));
+                    stepsObs.unobserve(e.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+        }, { threshold: 0.3 });
+        stepsObs.observe(stepsC);
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        /* ─── Animated Counters ─── */
+        const counters = document.querySelectorAll('[data-count]');
+        let countersDone = false;
+        function fmtNum(n) { return n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, '') + 'K' : String(n); }
+        function animateCounters() {
+            if (countersDone) return; countersDone = true;
+            counters.forEach(el => {
+                const target = +el.dataset.count, suffix = el.dataset.suffix || '', dur = 1800, start = performance.now();
+                (function tick(now) {
+                    const t = Math.min((now - start) / dur, 1);
+                    el.textContent = fmtNum(Math.round((1 - Math.pow(1 - t, 3)) * target)) + suffix;
+                    if (t < 1) requestAnimationFrame(tick);
+                })(start);
+            });
+        }
+        const statsObs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { animateCounters(); statsObs.unobserve(e.target); } });
+        }, { threshold: 0.5 });
+        counters.forEach(el => statsObs.observe(el));
+
+        /* ─── Parallax Orbs (mouse-follow, desktop only) ─── */
+        if (!matchMedia('(pointer: coarse)').matches) {
+            let mx = 0, my = 0;
+            document.addEventListener('mousemove', e => { mx = (e.clientX / innerWidth - 0.5) * 2; my = (e.clientY / innerHeight - 0.5) * 2; }, { passive: true });
+            const orbs = document.querySelectorAll('.hero__orb');
+            (function pTick() {
+                orbs.forEach((o, i) => { const f = (i + 1) * 14; o.style.transform = `translate(${mx * f}px, ${my * f}px)`; });
+                requestAnimationFrame(pTick);
+            })();
+        }
+
+        /* ─── Smooth Nav Scroll ─── */
+        document.querySelectorAll('.top-bar__nav a').forEach(a => {
+            a.addEventListener('click', e => {
+                const href = a.getAttribute('href');
+                if (href.startsWith('#')) { e.preventDefault(); document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            });
+        });
+    })();
     </script>
 </body>
 </html>
