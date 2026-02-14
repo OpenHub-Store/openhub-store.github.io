@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening in GitHub Store…</title>
+    <meta name="description" content="Redirecting you to GitHub Store app to view this repository.">
+    <meta name="theme-color" content="#0f1512" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f4fbf7" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/rainxchzed/Github-Store/main/composeApp/src/commonMain/composeResources/drawable/app-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Open in GitHub Store">
+    <meta property="og:description" content="View this repository in GitHub Store — the open-source app store for GitHub releases.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/rainxchzed/Github-Store/refs/heads/main/screenshots/banner.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ── Design Tokens — Material You Expressive (Teal seed) ── */
+        :root {
+            --md-primary: #006b5e;
+            --md-on-primary: #ffffff;
+            --md-primary-container: #5bf5d8;
+            --md-on-primary-container: #00201b;
+            --md-secondary: #4a635d;
+            --md-on-secondary: #ffffff;
+            --md-secondary-container: #cde8e0;
+            --md-on-secondary-container: #06201b;
+            --md-tertiary: #436278;
+            --md-on-tertiary: #ffffff;
+            --md-tertiary-container: #c8e6ff;
+            --md-surface: #f4fbf7;
+            --md-surface-dim: #d5dbd8;
+            --md-surface-container-lowest: #ffffff;
+            --md-surface-container-low: #eef5f1;
+            --md-surface-container: #e8efeb;
+            --md-surface-container-high: #e3eae6;
+            --md-surface-container-highest: #dde4e0;
+            --md-on-surface: #171d1b;
+            --md-on-surface-variant: #3f4945;
+            --md-outline: #6f7975;
+            --md-outline-variant: #bfc9c4;
+            --md-inverse-surface: #2c322f;
+            --md-inverse-on-surface: #ecf2ee;
+            --md-glow: rgba(0, 107, 94, 0.12);
+            --md-glow-strong: rgba(0, 107, 94, 0.25);
+            --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.1);
+            --elevation-3: 0 6px 16px 4px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.1);
+            --elevation-4: 0 8px 28px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);
+            --shape-sm: 8px; --shape-md: 12px; --shape-lg: 16px;
+            --shape-xl: 28px; --shape-full: 9999px;
+            --motion-standard: cubic-bezier(0.2, 0, 0, 1);
+            --motion-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+            --motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        [data-theme="dark"] {
+            --md-primary: #35d8bc;
+            --md-on-primary: #003730;
+            --md-primary-container: #005047;
+            --md-on-primary-container: #5bf5d8;
+            --md-secondary: #b1ccc4;
+            --md-on-secondary: #1d352f;
+            --md-secondary-container: #344c46;
+            --md-on-secondary-container: #cde8e0;
+            --md-tertiary: #accbe3;
+            --md-on-tertiary: #133347;
+            --md-tertiary-container: #2b4a5f;
+            --md-surface: #0f1512;
+            --md-surface-dim: #0f1512;
+            --md-surface-container-lowest: #0a0f0d;
+            --md-surface-container-low: #171d1b;
+            --md-surface-container: #1b211f;
+            --md-surface-container-high: #262b29;
+            --md-surface-container-highest: #303634;
+            --md-on-surface: #dde4e0;
+            --md-on-surface-variant: #bfc9c4;
+            --md-outline: #89938f;
+            --md-outline-variant: #3f4945;
+            --md-inverse-surface: #dde4e0;
+            --md-inverse-on-surface: #2c322f;
+            --md-glow: rgba(53, 216, 188, 0.1);
+            --md-glow-strong: rgba(53, 216, 188, 0.2);
+            --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.35);
+            --elevation-3: 0 6px 16px 4px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.3);
+            --elevation-4: 0 8px 28px 6px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+        }
+        @media (prefers-color-scheme: dark) {
+            [data-theme="auto"] {
+                --md-primary: #35d8bc;
+                --md-on-primary: #003730;
+                --md-primary-container: #005047;
+                --md-on-primary-container: #5bf5d8;
+                --md-secondary: #b1ccc4;
+                --md-on-secondary: #1d352f;
+                --md-secondary-container: #344c46;
+                --md-on-secondary-container: #cde8e0;
+                --md-tertiary: #accbe3;
+                --md-on-tertiary: #133347;
+                --md-tertiary-container: #2b4a5f;
+                --md-surface: #0f1512;
+                --md-surface-dim: #0f1512;
+                --md-surface-container-lowest: #0a0f0d;
+                --md-surface-container-low: #171d1b;
+                --md-surface-container: #1b211f;
+                --md-surface-container-high: #262b29;
+                --md-surface-container-highest: #303634;
+                --md-on-surface: #dde4e0;
+                --md-on-surface-variant: #bfc9c4;
+                --md-outline: #89938f;
+                --md-outline-variant: #3f4945;
+                --md-inverse-surface: #dde4e0;
+                --md-inverse-on-surface: #2c322f;
+                --md-glow: rgba(53, 216, 188, 0.1);
+                --md-glow-strong: rgba(53, 216, 188, 0.2);
+                --elevation-2: 0 2px 6px 2px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.35);
+                --elevation-3: 0 6px 16px 4px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.3);
+                --elevation-4: 0 8px 28px 6px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+            }
+        }
+
+        /* ── Reset & Base ── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--md-surface);
+            color: var(--md-on-surface);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 500ms var(--motion-standard), color 500ms var(--motion-standard);
+        }
+        a { color: var(--md-primary); text-decoration: none; }
+
+        /* ── Noise Texture ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.022;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* ── Background Orbs ── */
+        .bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            will-change: transform;
+        }
+        .orb--1 { width: 600px; height: 600px; background: var(--md-primary); opacity: 0.1; top: -20%; right: -10%; }
+        .orb--2 { width: 400px; height: 400px; background: var(--md-tertiary); opacity: 0.07; bottom: -15%; left: -8%; }
+        .orb--3 { width: 300px; height: 300px; background: var(--md-primary-container); opacity: 0.09; top: 40%; left: 50%; }
+
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--md-outline-variant) 1px, transparent 1px),
+                linear-gradient(90deg, var(--md-outline-variant) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: 0.05;
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Main Card ── */
+        .card {
+            position: relative;
+            z-index: 1;
+            background: var(--md-surface-container-low);
+            border: 1px solid var(--md-outline-variant);
+            border-radius: 32px;
+            padding: 48px 40px;
+            max-width: 480px;
+            width: calc(100% - 32px);
+            text-align: center;
+            box-shadow: var(--elevation-3);
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            animation: cardIn 800ms 200ms var(--motion-emphasized) forwards;
+        }
+        @keyframes cardIn {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ── App Icon ── */
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin: 0 auto 24px;
+            box-shadow: var(--elevation-2);
+            opacity: 0;
+            transform: scale(0.5);
+            animation: iconPop 600ms 500ms var(--motion-spring) forwards;
+        }
+        @keyframes iconPop {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ── Status Indicator ── */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px 6px 10px;
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+            border-radius: var(--shape-full);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeUp 600ms 700ms var(--motion-emphasized) forwards;
+        }
+        .status__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--md-primary);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.75); }
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Typography ── */
+        .title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeUp 700ms 800ms var(--motion-emphasized) forwards;
+        }
+        .title em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .repo-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--md-primary);
+            margin-bottom: 8px;
+            word-break: break-all;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 600ms 900ms var(--motion-emphasized) forwards;
+        }
+        .subtitle {
+            font-size: 0.9375rem;
+            color: var(--md-on-surface-variant);
+            line-height: 1.65;
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 600ms 1000ms var(--motion-emphasized) forwards;
+        }
+
+        /* ── Spinner ── */
+        .spinner-wrap {
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 500ms 1100ms var(--motion-emphasized) forwards;
+            transform: translateY(10px);
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            border: 3px solid var(--md-outline-variant);
+            border-top-color: var(--md-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Buttons ── */
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 600ms 1200ms var(--motion-emphasized) forwards;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            letter-spacing: 0.01em;
+            text-decoration: none;
+            border-radius: var(--shape-full);
+            transition: all 300ms var(--motion-standard);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 200ms;
+        }
+        .btn:hover::before { opacity: 1; }
+        .btn--filled {
+            height: 52px;
+            padding: 0 32px;
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            box-shadow: var(--elevation-2);
+        }
+        .btn--filled:hover { box-shadow: var(--elevation-3); transform: translateY(-2px); }
+        .btn--filled:active { transform: translateY(0); }
+        .btn--filled::before { background: rgba(255,255,255,0.1); }
+        .btn--tonal {
+            height: 48px;
+            padding: 0 28px;
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+        }
+        .btn--tonal:hover { box-shadow: var(--elevation-2); transform: translateY(-1px); }
+        .btn--tonal::before { background: color-mix(in srgb, var(--md-on-secondary-container) 8%, transparent); }
+        .btn--outlined {
+            height: 44px;
+            padding: 0 24px;
+            background: transparent;
+            color: var(--md-primary);
+            border: 1.5px solid var(--md-outline);
+        }
+        .btn--outlined:hover {
+            background: color-mix(in srgb, var(--md-primary) 8%, transparent);
+            border-color: var(--md-primary);
+            transform: translateY(-1px);
+        }
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        /* ── States ── */
+        .state { display: none; }
+        .state.active { display: block; }
+
+        /* ── Error state ── */
+        .error-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: color-mix(in srgb, var(--md-tertiary) 15%, transparent);
+            color: var(--md-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .error-icon svg { width: 28px; height: 28px; }
+
+        /* ── Footer ── */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 16px;
+            z-index: 1;
+        }
+        .footer a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--md-on-surface-variant);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            transition: color 200ms;
+        }
+        .footer a:hover { color: var(--md-primary); }
+        .footer img {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            .card { padding: 36px 24px; border-radius: 24px; }
+            .title { font-size: 1.5rem; }
+            .btn-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg">
+        <div class="grid-bg"></div>
+        <div class="orb orb--1"></div>
+        <div class="orb orb--2"></div>
+        <div class="orb orb--3"></div>
+    </div>
+
+    <!-- Card -->
+    <main class="card">
+        <!-- Redirecting State -->
+        <div class="state active" id="stateRedirecting">
+            <img
+                class="app-icon"
+                src="https://raw.githubusercontent.com/rainxchzed/Github-Store/main/composeApp/src/commonMain/composeResources/drawable/app-icon.png"
+                alt="GitHub Store"
+                width="80" height="80"
+            >
+            <div class="status">
+                <span class="status__dot"></span>
+                Redirecting…
+            </div>
+            <h1 class="title">Opening in <em>GitHub Store</em></h1>
+            <p class="repo-name" id="repoDisplay"></p>
+            <p class="subtitle">You'll be redirected to the app in a moment. If nothing happens, use the button below.</p>
+            <div class="spinner-wrap">
+                <div class="spinner"></div>
+            </div>
+            <div class="actions">
+                <a class="btn btn--filled" id="openAppBtn" href="#">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                    Open in GitHub Store
+                </a>
+                <div class="btn-row">
+                    <a class="btn btn--tonal" id="githubBtn" href="#" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
+                        View on GitHub
+                    </a>
+                    <a class="btn btn--outlined" href="https://github.com/rainxchzed/Github-Store/releases/latest" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+                        Get the App
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error / Invalid URL State -->
+        <div class="state" id="stateError">
+            <div class="error-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
+            <h1 class="title">Invalid Link</h1>
+            <p class="subtitle" style="margin-bottom:24px;">This deep link doesn't point to a valid repository. Make sure the URL follows the format:<br><code style="font-size:0.8125rem;color:var(--md-primary);background:var(--md-surface-container-high);padding:4px 10px;border-radius:6px;display:inline-block;margin-top:8px;">github-store.org/app/{owner}/{repo}</code></p>
+            <div class="actions">
+                <a class="btn btn--filled" href="https://github-store.org">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                    Go to Homepage
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div class="footer">
+        <a href="https://github-store.org">
+            <img src="https://raw.githubusercontent.com/rainxchzed/Github-Store/main/composeApp/src/commonMain/composeResources/drawable/app-icon.png" alt="" width="20" height="20">
+            GitHub Store
+        </a>
+    </div>
+
+    <script>
+    (() => {
+        // Parse /app/{owner}/{repo} from the URL path
+        const path = window.location.pathname;
+        const match = path.match(/^\/app\/([^/]+)\/([^/?#]+)/);
+
+        const stateRedirecting = document.getElementById('stateRedirecting');
+        const stateError = document.getElementById('stateError');
+        const repoDisplay = document.getElementById('repoDisplay');
+        const openAppBtn = document.getElementById('openAppBtn');
+        const githubBtn = document.getElementById('githubBtn');
+
+        if (!match || !match[1] || !match[2]) {
+            // Invalid URL — show error
+            stateRedirecting.classList.remove('active');
+            stateError.classList.add('active');
+            return;
+        }
+
+        const owner = decodeURIComponent(match[1]);
+        const repo = decodeURIComponent(match[2]);
+        const deepLink = `githubstore://repo/${owner}/${repo}`;
+        const githubUrl = `https://github.com/${owner}/${repo}`;
+
+        // Set up UI
+        repoDisplay.textContent = `${owner}/${repo}`;
+        document.title = `Opening ${owner}/${repo} in GitHub Store…`;
+        openAppBtn.href = deepLink;
+        githubBtn.href = githubUrl;
+
+        // Attempt to open the app automatically after a short delay
+        setTimeout(() => {
+            window.location.href = deepLink;
+        }, 1500);
+    })();
+    </script>
+</body>
+</html>
