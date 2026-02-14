@@ -475,7 +475,7 @@
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
             </div>
             <h1 class="title">Invalid Link</h1>
-            <p class="subtitle" style="margin-bottom:24px;">This deep link doesn't point to a valid repository. Make sure the URL follows the format:<br><code style="font-size:0.8125rem;color:var(--md-primary);background:var(--md-surface-container-high);padding:4px 10px;border-radius:6px;display:inline-block;margin-top:8px;">github-store.org/app/{owner}/{repo}</code></p>
+            <p class="subtitle" style="margin-bottom:24px;">This deep link doesn't point to a valid repository. Make sure the URL follows the format:<br><code style="font-size:0.8125rem;color:var(--md-primary);background:var(--md-surface-container-high);padding:4px 10px;border-radius:6px;display:inline-block;margin-top:8px;">github-store.org/app/?repo=owner/repo</code></p>
             <div class="actions">
                 <a class="btn btn--filled" href="https://github-store.org">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -495,9 +495,8 @@
 
     <script>
     (() => {
-        // Parse /app/{owner}/{repo} from the URL path
-        const path = window.location.pathname;
-        const match = path.match(/^\/app\/([^/]+)\/([^/?#]+)/);
+        const params = new URLSearchParams(window.location.search);
+        const repo = params.get('repo');
 
         const stateRedirecting = document.getElementById('stateRedirecting');
         const stateError = document.getElementById('stateError');
@@ -505,25 +504,27 @@
         const openAppBtn = document.getElementById('openAppBtn');
         const githubBtn = document.getElementById('githubBtn');
 
-        if (!match || !match[1] || !match[2]) {
-            // Invalid URL — show error
+        // Validate: must be "owner/repo" format
+        const match = repo ? repo.match(/^([^/]+)\/([^/]+)$/) : null;
+
+        if (!match) {
             stateRedirecting.classList.remove('active');
             stateError.classList.add('active');
             return;
         }
 
-        const owner = decodeURIComponent(match[1]);
-        const repo = decodeURIComponent(match[2]);
-        const deepLink = `githubstore://repo/${owner}/${repo}`;
-        const githubUrl = `https://github.com/${owner}/${repo}`;
+        const owner = match[1];
+        const repoName = match[2];
+        const deepLink = `githubstore://repo/${owner}/${repoName}`;
+        const githubUrl = `https://github.com/${owner}/${repoName}`;
 
         // Set up UI
-        repoDisplay.textContent = `${owner}/${repo}`;
-        document.title = `Opening ${owner}/${repo} in GitHub Store…`;
+        repoDisplay.textContent = `${owner}/${repoName}`;
+        document.title = `Opening ${owner}/${repoName} — GitHub Store`;
         openAppBtn.href = deepLink;
         githubBtn.href = githubUrl;
 
-        // Attempt to open the app automatically after a short delay
+        // Auto-redirect after a short delay
         setTimeout(() => {
             window.location.href = deepLink;
         }, 1500);
