@@ -4,7 +4,8 @@
     "namespace": "android_app",
     "package_name": "zed.rainxch.githubstore",
     "sha256_cert_fingerprints": [
-      "B7:F2:8E:19:8E:48:C1:93:B0:38:C6:5D:92:DD:F7:BC:07:7B:0D:B5:9E:BC:9B:25:0A:6D:AC:48:C1:18:03:CA"
+      "B7:F2:8E:19:8E:48:C1:93:B0:38:C6:5D:92:DD:F7:BC:07:7B:0D:B5:9E:BC:9B:25:0A:6D:AC:48:C1:18:03:CA",
+      "2C:1A:1C:D3:21:CA:F4:3F:E6:46:2E:B5:62:2D:30:C4:58:15:58:61:4E:D9:D3:27:5F:BA:E5:0D:4F:40:2D:CB"
     ]
   }
 }]
