@@ -379,7 +379,6 @@
 
         // Detect platform
         const ua = navigator.userAgent.toLowerCase();
-        const isAndroid = ua.includes('android');
 
         // The URI to use for opening the app
         const openUri = isAndroid ? intentUri : customSchemeUri;
@@ -390,10 +389,13 @@
         openAppBtn.href = openUri;
         githubBtn.href = githubUrl;
 
-        // Auto-redirect after a short delay
-        setTimeout(function() {
-            window.location.href = openUri;
-        }, 1500);
+       const isAndroid = ua.includes('android');
+
+        if (!isAndroid) {
+            setTimeout(() => {
+                window.location.replace(openUri);
+            }, 1200);
+        }
     })();
     </script>
 </body>
