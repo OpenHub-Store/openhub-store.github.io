@@ -353,9 +353,8 @@
         const openAppBtn = document.getElementById('openAppBtn');
         const githubBtn = document.getElementById('githubBtn');
 
-        // Validate: must be "owner/repo" format
+        // Validate
         const match = repo ? repo.match(/^([^/]+)\/([^/]+)$/) : null;
-
         if (!match) {
             stateRedirecting.classList.remove('active');
             stateError.classList.add('active');
@@ -366,21 +365,17 @@
         const repoName = match[2];
         const githubUrl = 'https://github.com/' + owner + '/' + repoName;
 
-        // Custom scheme URI (works on desktop & iOS)
+        // URIs
         const customSchemeUri = 'githubstore://repo/' + owner + '/' + repoName;
-
-        // Android intent:// URI — this is what actually works in Android browsers.
-        // It tells the browser: "try to open this app, and if it's not installed,
-        // go to the fallback URL (Play Store / releases page)".
         const intentUri = 'intent://repo/' + owner + '/' + repoName
             + '#Intent;scheme=githubstore;package=zed.rainxch.githubstore;'
             + 'S.browser_fallback_url=' + encodeURIComponent('https://github.com/rainxchzed/Github-Store/releases/latest')
             + ';end';
 
-        // Detect platform
+        // Detect platform (MUST be before we use isAndroid)
         const ua = navigator.userAgent.toLowerCase();
+        const isAndroid = ua.includes('android');
 
-        // The URI to use for opening the app
         const openUri = isAndroid ? intentUri : customSchemeUri;
 
         // Set up UI
@@ -389,14 +384,17 @@
         openAppBtn.href = openUri;
         githubBtn.href = githubUrl;
 
-       const isAndroid = ua.includes('android');
-
+        // Auto-redirect only on non-Android (iOS + desktop)
         if (!isAndroid) {
             setTimeout(() => {
                 window.location.replace(openUri);
             }, 1200);
         }
+
+        // Optional: log for debugging
+        console.log('Platform:', isAndroid ? 'Android' : 'iOS/Desktop');
+        console.log('openUri:', openUri);
     })();
-    </script>
+</script>
 </body>
 </html>
