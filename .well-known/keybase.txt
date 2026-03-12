@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/rainxchzed
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://github-store.org
+  * I am rainxchzed (https://keybase.io/rainxchzed) on keybase.
+  * I have a public key with fingerprint 648A EFD1 1A1B C3D3 E6AB  8A93 18B5 0ED6 06FF 8EBD
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0101031fe259c9737332eed4cef6c68c15c943de48fa344fe3e292c84d993ef16f080a",
+      "fingerprint": "648aefd11a1bc3d3e6ab8a9318b50ed606ff8ebd",
+      "host": "keybase.io",
+      "key_id": "18b50ed606ff8ebd",
+      "kid": "0101031fe259c9737332eed4cef6c68c15c943de48fa344fe3e292c84d993ef16f080a",
+      "uid": "2bbdff26db1d3847f8c4b333eb375019",
+      "username": "rainxchzed"
+    },
+    "service": {
+      "hostname": "github-store.org",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1773328266,
+  "expire_in": 157680000,
+  "prev": "8f59456e57f943ce07b4517500742da58cbcb3ea2327f620cbe03a4984c003c0",
+  "seqno": 3,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.1.17
+Comment: https://keybase.io/crypto
+
+yMIuAnicrVJJaBRBFJ0sJiYQyUnQi9Aqoo6xu6uX6kGj0YgLuAUUcWHoqvo10xq7
+x55OTDQjKopLUDGJOyoqAx7cUDCiRExUNLiBW8AFF8QFRETiEhFiddCbR6sORf16
+79V7n3+tJC9SnDNZqlg7avGzvJxb7QdrIs7Zrq2rJeKxeim2WloGfQdUM0gH8WUO
+k2KSrIiNFA6qblHLRCZCKgDTKHCDGpgqOrU0xEDD3EaaxgGBaqkUa8yyEHDF4DKW
+bSkqccdNgJ/yHTcQsoaGbeBMUWyFUMQQGDbBtoUUTHQZmCEbnGMgTBCTXjpkCHPE
+TkOZ44mauMT77P0D/5991/TJqYQwzlWDEYUhrJkcU40ghIAgU5cVKwSmwXft5SDQ
+vu24dTS5CpiUiUqiXutQCFsbZvmDSThBsoaMSQeeD2WenxAKKd8LPOpVi9dkEKTS
+sZAd1KdC+Eog8T9CceK4THRTMGrBTzueK8UUgaSBEyorZpgVq4YRlaAu5fgQd0KE
+bhpYFiv8B2qFJOa6pekG6CYXraAgm0TTFRFHNjWV2TqmhBIEtopUkxuqTAnIyNYs
+rFFZRlSWwmgrXE+KIWHTTgjJtJNw7aDGBynTcWVxfiSnOFLQLzecskhxUenf2dt7
+pLB3wYIrLQNaXjxS7g++a21qil47M7Cl239++uWT28Pbmu1n5erDV5+mFY6smh08
+2NE5q2vQjBHnTjydxQfvq5g49PCXKdHeAefjuV35Czc/7m3MpjpXtEr9LuOib6ca
+Pzdmtt1a9Va9Ublk7p2eSfMX7bn7oaxg/DH8o41Vle7JtjU/avjeY2zPvHt/+FW2
+/U1k5vB1F39dLb+T9boPaDsPTTyGxzQ1tV0q7Viz9GjRxh2ZA503Fn0e2b5bnZBq
+dscqX6c6yXfzsvc6pm+5Paxk3H4Xj6tU4WTZr9HGhsnLR7R3rG+w0abcxvrjFwry
+qhau+7kr78yQhuvlN9/nl/R87L+ztXrO89fffgOHlUdK
+=125v
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/rainxchzed
+
+==================================================================
