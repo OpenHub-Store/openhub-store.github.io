@@ -196,8 +196,8 @@
 
     <div class="container">
         <div class="info-box">
-            <strong>Last Updated:</strong> January 28, 2025<br>
-            <strong>Version:</strong> 1.0<br>
+            <strong>Last Updated:</strong> April 17, 2026<br>
+            <strong>Version:</strong> 2.0<br>
             <strong>Developer:</strong> Usmon Narzullayev (rainxchzed)<br>
             <strong>Contact:</strong> rainxchzed@gmail.com
         </div>
@@ -207,9 +207,11 @@
         <h2>TL;DR - The Short Version</h2>
         <ul>
             <li>✅ <strong>We collect NO personal data</strong></li>
-            <li>✅ <strong>No analytics, no tracking, no ads</strong></li>
-            <li>✅ <strong>All data stays on your device</strong></li>
-            <li>✅ <strong>We don't operate servers that store your data</strong></li>
+            <li>✅ <strong>Analytics are opt-in and anonymous</strong> - off by default</li>
+            <li>✅ <strong>Most data stays on your device</strong></li>
+            <li>✅ <strong>Our backend caches public GitHub data to speed up the app</strong></li>
+            <li>✅ <strong>We never store your search queries in plain text</strong></li>
+            <li>✅ <strong>No ads, no tracking, no data sales</strong></li>
             <li>✅ <strong>100% open source and auditable</strong></li>
         </ul>
 
@@ -224,47 +226,74 @@
             <li>The token is used solely to increase your GitHub API rate limit</li>
         </ul>
 
-        <h3>Local Data (Android Only)</h3>
+        <h3>Local Data</h3>
         <ul>
             <li><strong>Installed Apps Database:</strong> We track apps you've installed via GitHub Store to notify you of updates</li>
             <li><strong>Preferences:</strong> Theme settings, search history stored locally</li>
-            <li><strong>All data remains on your device</strong> and is never transmitted to external servers</li>
+            <li><strong>All local data remains on your device</strong></li>
         </ul>
 
+        <h3>Backend API</h3>
+        <p>GitHub Store operates a backend service (<strong>api.github-store.org</strong>) that caches publicly available GitHub repository metadata to provide faster search and browsing. When you use the app:</p>
+        <ul>
+            <li>Search queries and category browsing requests are sent to our backend</li>
+            <li>Your IP address is visible to our infrastructure provider (Hetzner) and CDN (Cloudflare), as with any web request</li>
+            <li>We do <strong>not</strong> log or store your IP address, search queries in plain text, or any personally identifiable information on our servers</li>
+            <li>The backend serves only publicly available GitHub data - it does not host or mirror any binary files</li>
+        </ul>
+
+        <h3>Optional Anonymous Analytics</h3>
+        <p>If you enable "Help improve search" in Settings (<strong>off by default</strong>), the app sends anonymous usage events to help us improve search quality:</p>
+        <ul>
+            <li><strong>Anonymous device ID:</strong> A random identifier generated on your device - not linked to your identity, GitHub account, or any personal data. You can reset it at any time from Settings</li>
+            <li><strong>Event types:</strong> Search result clicks, app installs/uninstalls (success/failure), repo views</li>
+            <li><strong>Search queries:</strong> Stored only as salted hashes or top-N aggregates - we <strong>never</strong> store your raw search text</li>
+            <li><strong>Platform:</strong> Operating system (e.g. "android", "desktop-macos") and app version</li>
+        </ul>
+        <p>You can disable analytics at any time. When disabled, no data is sent to our servers.</p>
+
         <h2>What We DON'T Collect</h2>
-        
+
         <div class="no-collect">
-            <div class="no-collect-item">❌ Personal information</div>
+            <div class="no-collect-item">❌ Personal information or real names</div>
             <div class="no-collect-item">❌ Location data</div>
-            <div class="no-collect-item">❌ Device identifiers</div>
-            <div class="no-collect-item">❌ Usage analytics</div>
-            <div class="no-collect-item">❌ Crash reports</div>
-            <div class="no-collect-item">❌ Advertising data</div>
+            <div class="no-collect-item">❌ Email addresses</div>
+            <div class="no-collect-item">❌ Raw search queries</div>
+            <div class="no-collect-item">❌ Advertising data or ad IDs</div>
+            <div class="no-collect-item">❌ Data from other apps on your device</div>
         </div>
 
         <h2>How We Use Information</h2>
 
-        <p><strong>GitHub API Access:</strong> We make direct API calls to GitHub's servers to fetch repository and release information. These requests go straight from your device to GitHub - we don't proxy or log them.</p>
+        <p><strong>Backend API:</strong> Our backend (api.github-store.org) caches publicly available GitHub repository metadata to provide fast search and app discovery. Before you install any app, the client always re-fetches release information directly from GitHub to ensure download links are current.</p>
 
-        <p><strong>Local Storage:</strong> The installed apps database and preferences are stored locally using Android's SQLite and DataStore. This data never leaves your device.</p>
+        <p><strong>GitHub API Access:</strong> The app may also make direct API calls to GitHub's servers. These requests go from your device to GitHub.</p>
+
+        <p><strong>Anonymous Analytics (if enabled):</strong> Usage events are aggregated to improve search ranking and discover trending apps. Individual events are rolled up into daily statistics and are not used to build user profiles.</p>
+
+        <p><strong>Local Storage:</strong> The installed apps database and preferences are stored locally using platform-specific storage. This data never leaves your device.</p>
 
         <h2>Data Sharing</h2>
-        
-        <p class="highlight">We do not share your data with any third parties. Period.</p>
 
-        <p><strong>External Services:</strong></p>
+        <p class="highlight">We do not sell, rent, or share your data with any third parties for marketing or advertising purposes.</p>
+
+        <p><strong>Services involved in operating GitHub Store:</strong></p>
         <ul>
             <li><strong>GitHub API:</strong> Direct communication with api.github.com (subject to <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank">GitHub's Privacy Policy</a>)</li>
-            <li><strong>No Other Services:</strong> No analytics, no advertising networks, no third-party SDKs</li>
+            <li><strong>Cloudflare:</strong> CDN and DDoS protection for api.github-store.org (subject to <a href="https://www.cloudflare.com/privacypolicy/" target="_blank">Cloudflare's Privacy Policy</a>)</li>
+            <li><strong>Hetzner:</strong> Server hosting in the EU (subject to <a href="https://www.hetzner.com/legal/privacy-policy" target="_blank">Hetzner's Privacy Policy</a>)</li>
+            <li><strong>Sentry:</strong> Error tracking for backend stability - receives only technical error data, no user information (subject to <a href="https://sentry.io/privacy/" target="_blank">Sentry's Privacy Policy</a>)</li>
+            <li><strong>No advertising networks or third-party analytics SDKs</strong></li>
         </ul>
 
         <h2>Data Security</h2>
-        
+
         <ul>
-            <li>OAuth tokens encrypted using Android Keystore</li>
-            <li>All network communication uses HTTPS</li>
-            <li>No cloud storage or remote servers</li>
-            <li>Open source code - fully auditable at <a href="https://github.com/rainxchzed/Github-Store" target="_blank">github.com/rainxchzed/GitHub-Store</a></li>
+            <li>OAuth tokens encrypted using platform-specific secure storage (Android Keystore)</li>
+            <li>All network communication uses HTTPS (TLS 1.2+)</li>
+            <li>Backend database is not publicly accessible - only the API endpoints are exposed</li>
+            <li>Anonymous device IDs are rotatable by the user at any time</li>
+            <li>Open source code - fully auditable at <a href="https://github.com/OpenHub-Store/GitHub-Store" target="_blank">github.com/OpenHub-Store/GitHub-Store</a></li>
         </ul>
 
         <h2>Your Rights</h2>
@@ -272,7 +301,9 @@
         <p>You have full control over your data:</p>
         <ul>
             <li><strong>Access:</strong> View all stored data through the app interface</li>
-            <li><strong>Delete:</strong> Sign out to remove OAuth token, or clear app data in Android Settings</li>
+            <li><strong>Delete:</strong> Sign out to remove OAuth token, or clear app data in Settings</li>
+            <li><strong>Opt out:</strong> Disable "Help improve search" to stop all analytics collection</li>
+            <li><strong>Reset analytics ID:</strong> Generate a new anonymous device ID from Settings at any time, severing any link to previous usage data</li>
             <li><strong>No Account Required:</strong> GitHub Store works without signing in</li>
             <li><strong>Uninstall:</strong> Removes all local data permanently</li>
         </ul>
@@ -301,11 +332,17 @@
             <li><strong>STORAGE (Android 9 and below):</strong> Save and access downloaded installers</li>
         </ul>
 
+        <h2>Data Retention</h2>
+
+        <p><strong>Local data:</strong> Retained until you clear app data or uninstall.</p>
+        <p><strong>Anonymous analytics events:</strong> Raw events are rolled up into daily aggregates and the raw records are deleted after 90 days. Aggregated statistics (e.g. "50 installs of app X today") are retained indefinitely but contain no user-identifiable information.</p>
+        <p><strong>Search miss data:</strong> Hashed search queries that returned no results are stored temporarily to improve our search index. The single raw sample copy is rotated weekly.</p>
+
         <h2>GDPR & CCPA Compliance</h2>
 
-        <p><strong>GDPR (EU Users):</strong> We do not process personal data as defined by GDPR. All data is stored locally on your device.</p>
+        <p><strong>GDPR (EU Users):</strong> Our backend servers are hosted in the EU (Hetzner, Germany/Finland). When analytics are disabled (default), we do not process personal data. When analytics are enabled, the anonymous device ID may constitute pseudonymous data under GDPR. You can exercise your right to erasure by resetting your analytics ID in Settings - this severs the link to all previous data.</p>
 
-        <p><strong>CCPA (California):</strong> We do not sell or share personal information. All processing occurs locally.</p>
+        <p><strong>CCPA (California):</strong> We do not sell or share personal information. Anonymous analytics data does not constitute "personal information" under CCPA as it cannot identify you.</p>
 
         <h2>Children's Privacy</h2>
 
@@ -338,8 +375,8 @@
             <p>Questions about this Privacy Policy or our privacy practices?</p>
             <div class="contact-links">
                 <a href="mailto:rainxchzed@gmail.com" class="contact-link">📧 Email</a>
-                <a href="https://github.com/rainxchzed/Github-Store" target="_blank" class="contact-link">💻 GitHub</a>
-                <a href="https://github.com/rainxchzed/Github-Store/issues" target="_blank" class="contact-link">🐛 Report Issue</a>
+                <a href="https://github.com/OpenHub-Store/GitHub-Store" target="_blank" class="contact-link">💻 GitHub</a>
+                <a href="https://github.com/OpenHub-Store/GitHub-Store/issues" target="_blank" class="contact-link">🐛 Report Issue</a>
             </div>
             <p style="margin-top: 1.5rem; color: var(--text-light);">We respond to privacy inquiries within 30 days.</p>
         </div>
@@ -347,12 +384,12 @@
 
     <footer>
         <p><strong>GitHub Store</strong> - Cross-Platform App Discovery</p>
-        <p>45,000+ Users | 5,000+ GitHub Stars | 100% Open Source</p>
+        <p>90,000+ Users | 11,000+ GitHub Stars | 100% Open Source</p>
         <p style="margin-top: 1rem; font-size: 0.875rem;">
             Built with ❤️ by <a href="https://github.com/rainxchzed" target="_blank" style="color: var(--primary);">Usmon Narzullayev</a>
         </p>
         <p style="margin-top: 0.5rem; font-size: 0.875rem;">
-            © 2025 GitHub Store. Licensed under Apache 2.0.
+            © 2025-2026 GitHub Store. Licensed under Apache 2.0.
         </p>
     </footer>
 </body>
