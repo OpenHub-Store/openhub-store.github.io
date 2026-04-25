@@ -6,7 +6,6 @@ backend:
 
 site_url: https://github-store.org
 display_url: https://github-store.org
-publish_mode: editorial_workflow
 
 media_folder: assets/uploads
 public_folder: /assets/uploads
