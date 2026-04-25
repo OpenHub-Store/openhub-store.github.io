@@ -16,7 +16,7 @@ In March 2026, Google began requiring Android app developers to verify their ide
 
 The stated rationale is reducing fraud and malware. That's a real problem. We don't dispute that. We dispute that requiring every open-source maintainer in the world to register a business relationship with Google is the right way to address it.
 
-F-Droid has stated publicly that the policy, if enforced as announced, would end the F-Droid project. The open letter against it has been signed by more than 65 organizations from 21 countries — including EFF, FSFE, KDE, Brave, The Tor Project, FOSDEM, Article 19, Signal (via Molly), and Obtainium. We're adding our name to that list.
+F-Droid has stated publicly that the policy, if enforced as announced, would end the F-Droid project. The open letter against it has been signed by more than 65 organizations from 21 countries — including EFF, FSFE, KDE, Brave, The Tor Project, FOSDEM, Article 19, Signal (via Molly), and Obtainium. GitHub Store is on the [signatories list](https://keepandroidopen.org/open-letter/#signatories).
 
 ## What this changes for sideloading
 
