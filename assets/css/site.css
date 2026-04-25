@@ -1518,6 +1518,7 @@ body.has-announce {
 }
 
 .announce-bar__count {
+    flex-shrink: 0;
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
