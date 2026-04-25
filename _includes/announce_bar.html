@@ -1,12 +1,17 @@
-<aside class="announce-bar" id="announceBar" role="region" aria-label="Keep Android Open announcement">
+<aside class="announce-bar" id="announceBar" role="region" aria-label="Keep Android Open warning">
     <div class="announce-bar__inner container">
-        <span class="announce-bar__dot" aria-hidden="true"></span>
+        <svg class="announce-bar__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.5 0.8 22h22.4L12 2.5zm0 5L19.7 20H4.3L12 7.5zm-1 4.5v5h2v-5h-2zm0 6v2h2v-2h-2z"/>
+        </svg>
         <p class="announce-bar__text">
             <span class="announce-bar__brand">Keep Android Open</span>
             <span class="announce-bar__verify">— Google enforces developer verification in</span>
             <span class="announce-bar__count" id="kaoCountdown" data-target="2026-09-01T00:00:00Z">soon</span>
         </p>
-        <a href="/news/keep-android-open/" class="announce-bar__cta">Read why →</a>
+        <a href="/news/keep-android-open/" class="announce-bar__cta" aria-label="Read why this matters">
+            <span class="announce-bar__cta__label">Read why</span>
+            <span class="announce-bar__cta__arrow" aria-hidden="true">→</span>
+        </a>
     </div>
 </aside>
 <script>
