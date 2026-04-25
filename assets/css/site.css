@@ -334,7 +334,7 @@ body::before {
     min-height: 100dvh;
     display: flex;
     align-items: center;
-    padding-top: calc(var(--top-bar-height) + var(--announce-height));
+    padding-top: var(--top-bar-height);
     position: relative;
     overflow: hidden;
 }
@@ -1424,7 +1424,10 @@ body::before {
     }
 }
 
-body.has-announce { --announce-height: 48px; }
+body.has-announce {
+    --announce-height: 48px;
+    padding-top: var(--announce-height);
+}
 
 .announce-bar {
     position: fixed;
