@@ -1,0 +1,27 @@
+---
+layout: default
+---
+<article class="news-article container">
+    <header class="news-article__header">
+        <p class="news-article__meta">
+            <time datetime="{{ page.date | date_to_xmlschema }}">
+                {{ page.date | date: "%B %-d, %Y" }}
+            </time>
+            {% if page.tags %}
+                {% for tag in page.tags %}
+                    <span class="news-article__tag">{{ tag }}</span>
+                {% endfor %}
+            {% endif %}
+        </p>
+        <h1 class="news-article__title">{{ page.title }}</h1>
+        {% if page.description %}
+            <p class="news-article__lede">{{ page.description }}</p>
+        {% endif %}
+    </header>
+    <div class="news-article__body">
+        {{ content }}
+    </div>
+    <footer class="news-article__footer">
+        <a href="/news/" class="news-article__back">← All news</a>
+    </footer>
+</article>

@@ -1,1 +1,35 @@
-include: [".well-known"]
+title: GitHub Store
+description: The app store for GitHub releases
+url: https://github-store.org
+
+include:
+  - .well-known
+  - admin
+
+# News collection
+collections:
+  news:
+    output: true
+    permalink: /news/:slug/
+    sort_by: date
+
+defaults:
+  - scope:
+      path: ""
+      type: news
+    values:
+      layout: news_post
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+permalink: pretty
+
+# Exclude from build
+exclude:
+  - README.md
+  - LICENSE
+  - .DS_Store
+  - "*.bak"

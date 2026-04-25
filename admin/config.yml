@@ -1,0 +1,36 @@
+backend:
+  name: github
+  repo: OpenHub-Store/openhub-store.github.io
+  branch: main
+  base_url: https://github-store-cms-oauth.rainxchzed.workers.dev
+
+site_url: https://github-store.org
+display_url: https://github-store.org
+publish_mode: editorial_workflow
+
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+collections:
+  - name: news
+    label: News Posts
+    folder: _news
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: md
+    format: frontmatter
+    sortable_fields: ["date", "title"]
+    summary: "{{title}} — {{date | date('YYYY-MM-DD')}}"
+    preview_path: "news/{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string, hint: "Used as page title and in the news listing." }
+      - { name: description, label: Lede, widget: string, required: false, hint: "One-sentence summary shown under the title and in feeds." }
+      - { name: date, label: Date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+        field: { name: tag, widget: string }
+      - { name: draft, label: Draft, widget: boolean, default: false, required: false, hint: "Draft posts are not published." }
+      - { name: body, label: Body, widget: markdown }

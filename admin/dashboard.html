@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — GitHub Store admin</title>
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/OpenHub-Store/GitHub-Store/refs/heads/main/media-resources/app_icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #006b5e;
+      --primary-hover: #00554a;
+      --bg: #f4fbf7;
+      --bg-elevated: #ffffff;
+      --fg: #171d1b;
+      --muted: #6f7975;
+      --border: #bfc9c4;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #35d8bc;
+        --primary-hover: #5bf5d8;
+        --bg: #0f1512;
+        --bg-elevated: #1b211f;
+        --fg: #dde4e0;
+        --muted: #bfc9c4;
+        --border: #3f4945;
+      }
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 64rem;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .header h1 span { color: var(--primary); }
+
+    .header-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .header-links a {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: var(--bg-elevated);
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .header-links a:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: var(--fg);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .card h2 {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8125rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>GitHub Store <span>admin</span></h1>
+      <div class="header-links">
+        <a href="/">Public site</a>
+        <a href="/news/">News (live)</a>
+        <a href="https://github.com/OpenHub-Store/openhub-store.github.io" rel="noopener">Repo</a>
+      </div>
+    </header>
+
+    <div class="grid">
+      <a href="/admin/" class="card">
+        <h2>Open editor</h2>
+        <p>Write or edit news posts. Submissions go through editorial workflow and require a merge to publish.</p>
+      </a>
+      <a href="/news/" class="card">
+        <h2>View live news</h2>
+        <p>See what's currently published on github-store.org/news.</p>
+      </a>
+      <a href="https://github.com/OpenHub-Store/openhub-store.github.io/pulls" class="card">
+        <h2>Pending PRs</h2>
+        <p>Review and merge editorial-workflow PRs.</p>
+      </a>
+      <a href="https://github.com/OpenHub-Store/openhub-store.github.io/actions" class="card">
+        <h2>Build status</h2>
+        <p>GitHub Pages build runs on every merge to main.</p>
+      </a>
+    </div>
+
+    <p class="footer">Sign in with a GitHub account that has write access to OpenHub-Store/openhub-store.github.io.</p>
+  </div>
+</body>
+</html>

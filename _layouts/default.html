@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: "en" }}" data-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} — GitHub Store{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <meta name="theme-color" content="#0f1512" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f4fbf7" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/OpenHub-Store/GitHub-Store/refs/heads/main/media-resources/app_icon.png">
+
+    <meta property="og:type" content="{% if page.layout == 'news_post' %}article{% else %}website{% endif %}">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:image" content="https://raw.githubusercontent.com/OpenHub-Store/Github-Store/refs/heads/main/media-resources/banner.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/site.css">
+    <link rel="alternate" type="application/rss+xml" title="GitHub Store News" href="/news/feed.xml">
+
+    {% if page.layout == 'news_post' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": {{ page.title | jsonify }},
+      "datePublished": "{{ page.date | date_to_xmlschema }}",
+      "author": {
+        "@type": "Organization",
+        "name": "GitHub Store"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "GitHub Store",
+        "url": "{{ site.url }}"
+      }
+    }
+    </script>
+    {% endif %}
+</head>
+<body>
+    {% include nav.html %}
+    <main>
+        {{ content }}
+    </main>
+    {% include footer.html %}
+</body>
+</html>
