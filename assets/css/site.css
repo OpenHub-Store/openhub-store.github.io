@@ -37,6 +37,9 @@
     --shape-sm: 8px; --shape-md: 12px; --shape-lg: 16px;
     --shape-xl: 28px; --shape-full: 9999px;
 
+    --top-bar-height: 64px;
+    --announce-height: 0px;
+
     --motion-standard: cubic-bezier(0.2, 0, 0, 1);
     --motion-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
     --motion-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -153,7 +156,7 @@ body::before {
    ══════════════════════════════════════════════════════════════ */
 .top-bar {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: var(--announce-height); left: 0; right: 0;
     z-index: 100;
     height: 64px;
     display: flex;
@@ -331,7 +334,7 @@ body::before {
     min-height: 100dvh;
     display: flex;
     align-items: center;
-    padding-top: 64px;
+    padding-top: calc(var(--top-bar-height) + var(--announce-height));
     position: relative;
     overflow: hidden;
 }
@@ -1373,4 +1376,124 @@ body::before {
     font-size: 0.9375rem;
     margin: 0;
     line-height: 1.5;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ANNOUNCE BAR — Keep Android Open
+   ══════════════════════════════════════════════════════════════ */
+body.has-announce { --announce-height: 48px; }
+
+.announce-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 101;
+    height: var(--announce-height);
+    background:
+        linear-gradient(90deg,
+            color-mix(in srgb, var(--md-primary-container) 92%, transparent) 0%,
+            color-mix(in srgb, var(--md-secondary-container) 95%, transparent) 100%);
+    color: var(--md-on-primary-container);
+    border-bottom: 1px solid color-mix(in srgb, var(--md-primary) 22%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--md-on-surface) 4%, transparent);
+    overflow: hidden;
+    transform: translateY(-100%);
+    animation: announceSlideIn 600ms 200ms var(--motion-emphasized) forwards;
+}
+
+@keyframes announceSlideIn {
+    to { transform: translateY(0); }
+}
+
+.announce-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 380px 90px at 0% 50%, color-mix(in srgb, var(--md-primary) 14%, transparent), transparent 70%),
+        radial-gradient(ellipse 380px 90px at 100% 50%, color-mix(in srgb, var(--md-tertiary) 12%, transparent), transparent 70%);
+}
+
+.announce-bar__inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.announce-bar__dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--md-primary);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--md-primary) 22%, transparent);
+    animation: pulse 2.4s ease-in-out infinite;
+}
+
+.announce-bar__text {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--md-on-primary-container);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: 0.005em;
+}
+
+.announce-bar__brand {
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    margin-right: 6px;
+}
+
+.announce-bar__sep {
+    margin: 0 8px;
+    color: color-mix(in srgb, var(--md-on-primary-container) 42%, transparent);
+}
+
+.announce-bar__count {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--md-primary);
+    padding: 1px 6px;
+    border-radius: var(--shape-sm);
+    background: color-mix(in srgb, var(--md-primary) 12%, transparent);
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+}
+
+.announce-bar__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--md-primary);
+    text-decoration: none;
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: var(--shape-full);
+    transition: background 200ms var(--motion-standard), transform 200ms var(--motion-standard);
+}
+
+.announce-bar__cta:hover {
+    background: color-mix(in srgb, var(--md-primary) 14%, transparent);
+    transform: translateX(2px);
+}
+
+@media (max-width: 640px) {
+    body.has-announce { --announce-height: 44px; }
+    .announce-bar__inner { gap: 10px; }
+    .announce-bar__text { font-size: 0.8125rem; }
+    .announce-bar__verify { display: none; }
+    .announce-bar__cta {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
 }

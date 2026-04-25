@@ -1,0 +1,29 @@
+<aside class="announce-bar" id="announceBar" role="region" aria-label="Keep Android Open announcement">
+    <div class="announce-bar__inner container">
+        <span class="announce-bar__dot" aria-hidden="true"></span>
+        <p class="announce-bar__text">
+            <span class="announce-bar__brand">Keep Android Open</span>
+            <span class="announce-bar__verify">— Google enforces developer verification in</span>
+            <span class="announce-bar__count" id="kaoCountdown" data-target="2026-09-01T00:00:00Z">soon</span>
+        </p>
+        <a href="/news/2026-04-25-keep-android-open/" class="announce-bar__cta">Read why →</a>
+    </div>
+</aside>
+<script>
+(function() {
+    var el = document.getElementById('kaoCountdown');
+    if (!el) return;
+    var target = new Date(el.dataset.target).getTime();
+    function fmt(n) { return n < 10 ? '0' + n : '' + n; }
+    function tick() {
+        var diff = target - Date.now();
+        if (diff <= 0) { el.textContent = 'now'; return; }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        el.textContent = d + 'd ' + fmt(h) + 'h ' + fmt(m) + 'm';
+        setTimeout(tick, 30000);
+    }
+    tick();
+})();
+</script>
