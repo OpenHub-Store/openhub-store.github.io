@@ -9,11 +9,27 @@
     <meta name="theme-color" content="#f4fbf7" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/OpenHub-Store/GitHub-Store/refs/heads/main/media-resources/app_icon.png">
 
+    {% if page.layout == 'news_post' %}
+        {% assign og_title = page.title | url_encode %}
+        {% assign og_desc = page.description | default: site.description | url_encode %}
+        {% capture og_image %}https://github-store-cms-oauth.rainxchzed.workers.dev/og?title={{ og_title }}&description={{ og_desc }}{% endcapture %}
+    {% else %}
+        {% assign og_image = "https://raw.githubusercontent.com/OpenHub-Store/Github-Store/refs/heads/main/media-resources/banner.jpeg" %}
+    {% endif %}
+
     <meta property="og:type" content="{% if page.layout == 'news_post' %}article{% else %}website{% endif %}">
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     <meta property="og:title" content="{{ page.title | default: site.title }}">
     <meta property="og:description" content="{{ page.description | default: site.description }}">
-    <meta property="og:image" content="https://raw.githubusercontent.com/OpenHub-Store/Github-Store/refs/heads/main/media-resources/banner.jpeg">
+    <meta property="og:site_name" content="GitHub Store">
+    <meta property="og:image" content="{{ og_image }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page.title | default: site.title }}">
+    <meta name="twitter:description" content="{{ page.description | default: site.description }}">
+    <meta name="twitter:image" content="{{ og_image }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
