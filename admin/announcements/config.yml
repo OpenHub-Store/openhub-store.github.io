@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: OpenHub-Store/github-store-backend
+  repo: OpenHub-Store/backend
   branch: main
   base_url: https://github-store-cms-oauth.rainxchzed.workers.dev
 
