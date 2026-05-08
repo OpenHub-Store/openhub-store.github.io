@@ -1,0 +1,51 @@
+<script>
+(() => {
+    /* ─── Theme Toggle ─── */
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const cycle = ['auto', 'light', 'dark'];
+    let idx = 0;
+    const saved = localStorage.getItem('gs-theme');
+    if (saved && cycle.includes(saved)) { idx = cycle.indexOf(saved); html.dataset.theme = saved; }
+    syncIcon();
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            idx = (idx + 1) % cycle.length;
+            html.dataset.theme = cycle[idx];
+            localStorage.setItem('gs-theme', cycle[idx]);
+            syncIcon();
+        });
+    }
+    function syncIcon() {
+        if (!toggle) return;
+        const map = { auto: 'auto', light: 'sun', dark: 'moon' };
+        toggle.dataset.active = map[cycle[idx]];
+        toggle.title = `Theme: ${cycle[idx]}`;
+    }
+
+    /* ─── Top Bar Scroll ─── */
+    const bar = document.getElementById('topBar');
+    if (bar) {
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) { requestAnimationFrame(() => { bar.classList.toggle('scrolled', scrollY > 24); ticking = false; }); ticking = true; }
+        }, { passive: true });
+    }
+
+    /* ─── Smooth Anchor Scroll ─── */
+    document.querySelectorAll('a[href^="/#"], a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const href = a.getAttribute('href');
+            const hash = href.startsWith('/#') ? href.slice(1) : href;
+            if (hash.length > 1 && location.pathname === '/' || location.pathname === '/index.html') {
+                const target = document.querySelector(hash);
+                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            }
+        });
+    });
+
+    /* ─── Year Stamp ─── */
+    const yEl = document.getElementById('year');
+    if (yEl) yEl.textContent = new Date().getFullYear();
+})();
+</script>

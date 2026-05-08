@@ -1,6 +1,17 @@
 title: GitHub Store
 description: The app store for GitHub releases
 url: https://github-store.org
+locale: en_US
+
+author:
+  name: Usmon Narzullayev
+  url: https://github.com/rainxchzed
+  twitter: rainxch_zed
+
+social:
+  twitter: rainxch_zed
+
+logo: /android-chrome-512x512.png
 
 include:
   - .well-known
@@ -27,9 +38,20 @@ kramdown:
   syntax_highlighter: rouge
 permalink: pretty
 
+plugins:
+  - jekyll-sitemap
+
+# Sitemap exclusions
+sitemap:
+  file: "/sitemap.xml"
+
 # Exclude from build
 exclude:
   - README.md
   - LICENSE
   - .DS_Store
   - "*.bak"
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .brain
