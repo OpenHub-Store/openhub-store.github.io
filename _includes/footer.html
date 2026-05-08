@@ -1,11 +1,24 @@
-<footer class="site-footer container">
-    <p>
-        <a href="/news/feed.xml">RSS</a>
-        ·
-        <a href="/privacy-policy/">Privacy</a>
-        ·
-        <a href="https://github.com/OpenHub-Store/GitHub-Store">GitHub</a>
-    </p>
-    <p class="site-footer__legal">© <span id="year"></span> GitHub Store · Apache 2.0</p>
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<footer class="footer">
+    <div class="container">
+        <div class="footer__inner">
+            <div class="footer__brand">
+                <img src="https://raw.githubusercontent.com/OpenHub-Store/GitHub-Store/refs/heads/main/media-resources/app_icon.png" alt="" width="28" height="28">
+                GitHub Store
+            </div>
+            <ul class="footer__links">
+                <li><a href="https://github.com/OpenHub-Store/Github-Store" target="_blank" rel="noopener">Source Code</a></li>
+                <li><a href="https://github.com/OpenHub-Store/Github-Store/wiki" target="_blank" rel="noopener">Wiki</a></li>
+                <li><a href="https://github.com/OpenHub-Store/Github-Store/releases" target="_blank" rel="noopener">Releases</a></li>
+                <li><a href="/news/">News</a></li>
+                <li><a href="/news/feed.xml">RSS</a></li>
+                <li><a href="https://discord.gg/x9Cvh2Z9qS" target="_blank" rel="noopener">Discord</a></li>
+                <li><a href="/privacy-policy/">Privacy Policy</a></li>
+                <li><a href="https://www.buymeacoffee.com/rainxchzed" target="_blank" rel="noopener">Support ☕</a></li>
+            </ul>
+            <div class="footer__bottom">
+                © <span id="year">{{ site.time | date: '%Y' }}</span> GitHub Store by <a href="https://github.com/rainxchzed" target="_blank" rel="noopener">rainxchzed</a>. Apache License 2.0.
+                <br><span class="footer__legal">GitHub® is a registered trademark of GitHub, Inc. This project is not affiliated with GitHub.</span>
+            </div>
+        </div>
+    </div>
 </footer>
