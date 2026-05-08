@@ -190,11 +190,11 @@ homepage: true
     </div>
 </section>
 
-<!-- ═══ Latest News ═══ -->
+<!-- ═══ Latest Blog ═══ -->
 <section class="latest-news container" aria-labelledby="latest-news-heading">
     <header class="latest-news__header">
-        <h2 id="latest-news-heading">Latest news</h2>
-        <a href="/news/" class="latest-news__more">All news →</a>
+        <h2 id="latest-news-heading">From the blog</h2>
+        <a href="/blog/" class="latest-news__more">All posts →</a>
     </header>
     <ul class="latest-news__items">
         {% assign latest = site.news | sort: "date" | reverse | slice: 0, 3 %}
