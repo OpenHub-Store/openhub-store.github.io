@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /preview/
+Disallow: /draft/
+
+Sitemap: https://github-store.org/sitemap.xml
