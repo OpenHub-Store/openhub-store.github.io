@@ -1514,7 +1514,11 @@ body::before {
 /* ══════════════════════════════════════════════════════════════
    NEWS ARTICLE
    ══════════════════════════════════════════════════════════════ */
-.news-article { max-width: 42rem; padding-top: 2rem; padding-bottom: 4rem; }
+.news-article {
+    max-width: 42rem;
+    padding-top: calc(var(--top-bar-height) + 2rem);
+    padding-bottom: 4rem;
+}
 .news-article__header { margin-bottom: 2rem; }
 .news-article__meta {
     color: var(--md-on-surface-variant);
