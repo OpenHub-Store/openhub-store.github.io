@@ -74,6 +74,8 @@ January 3: 2,500.
 
 I genuinely didn't understand what was happening. The growth was slow, then suddenly it wasn't. Made a LinkedIn post celebrating each milestone — those got more reactions than the launch did.
 
+![Star history chart from November 2025 first star to January 2026 reaching 2,500 stars — slow start, then exponential](/assets/uploads/star-history-202659.png)
+
 The biggest amplifier in that window was [HowToMen](https://www.youtube.com/@howtomen) — at around 2,000 stars, he featured GitHub Store in his *Top 12 App Stores Better than Play Store* video. His audience is exactly who the app is for: privacy-aware Android users who already mistrust Play. The trajectory after that video looked different.
 
 The inevitable comparison: yes, I know about [Obtainium](https://github.com/ImranR98/Obtainium). I get asked "why not Obtainium?" every week. Obtainium is the lightweight power-user updater for repos you already know about. GitHub Store is the discovery-first store for people who don't know what to install yet — and it's cross-platform. Use Obtainium. Use GitHub Store. Use both. We built Obtainium import/export so libraries move between them in one tap.
