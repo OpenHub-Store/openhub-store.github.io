@@ -759,7 +759,7 @@ body::before {
 [data-theme="dark"] .cmp-partial { color: #fbbf24; }
 
 @media (max-width: 640px) {
-    .comparison { padding: 56px 16px; }
+    .comparison { padding: 72px 16px; }
     .comparison__table { font-size: 0.875rem; }
     .comparison__table thead th,
     .comparison__table tbody th,
@@ -846,7 +846,7 @@ body::before {
 }
 
 @media (max-width: 640px) {
-    .about { padding: 56px 16px; }
+    .about { padding: 72px 16px; }
     .about__card { padding: 24px 22px; }
     .about__lede { font-size: 1rem; }
     .about__fact__value { font-size: 1.25rem; }
@@ -931,7 +931,7 @@ body::before {
 }
 
 @media (max-width: 640px) {
-    .faq { padding: 56px 16px; }
+    .faq { padding: 72px 16px; }
     .faq__item summary { padding: 16px 18px; }
     .faq__item summary h3 { font-size: 1rem; }
     .faq__item p { padding: 0 18px 20px; font-size: 0.9rem; }
@@ -2792,9 +2792,13 @@ body.has-announce {
 @media (max-width: 640px) {
     .newsletter { padding: 26px 22px; }
     .newsletter-section { padding: 48px 16px; }
-    .newsletter__field { flex-direction: column; gap: 12px; }
+    .newsletter__field { flex-direction: column; gap: 12px; align-items: stretch; }
     .newsletter__field input[type="email"],
-    .newsletter__field button { width: 100%; }
+    .newsletter__field button {
+        flex: none;
+        width: 100%;
+        height: 48px;
+    }
 }
 
 /* ══════════════════════════════════════════════════════════════
