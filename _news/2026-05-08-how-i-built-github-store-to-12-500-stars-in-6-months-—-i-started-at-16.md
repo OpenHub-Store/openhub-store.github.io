@@ -1,5 +1,6 @@
 ---
 title: How I built GitHub Store to 12,500 stars in 6 months — I started at 16
+slug: how-i-built-github-store
 description: "I built GitHub Store — a cross-platform app store for GitHub
   releases — in a one-week MVP sprint. Six months later: 12,500+ stars, 250,000+
   updates served, and the part where I almost quit at 3,000 stars."
