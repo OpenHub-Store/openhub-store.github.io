@@ -125,9 +125,9 @@ permalink: /press/
             <div><dt>License</dt><dd>Apache-2.0 (app + backend)</dd></div>
             <div><dt>Tech stack</dt><dd>Kotlin Multiplatform + Compose Multiplatform</dd></div>
             <div><dt>Platforms</dt><dd>Android, Windows, macOS, Linux</dd></div>
-            <div><dt>Languages</dt><dd>13</dd></div>
-            <div><dt>GitHub stars</dt><dd>12,710</dd></div>
-            <div><dt>Updates served</dt><dd>260,000+</dd></div>
+            <div><dt>Languages</dt><dd>{{ site.data.stats.languages }}</dd></div>
+            <div><dt>GitHub stars</dt><dd>{{ site.data.stats.stars }}</dd></div>
+            <div><dt>Updates served</dt><dd>{% assign upd_k = site.data.stats.updates | divided_by: 1000.0 | round %}{{ upd_k }}K+</dd></div>
             <div><dt>Backend hosting</dt><dd>Hetzner (EU), Gcore CDN</dd></div>
             <div><dt>Telemetry</dt><dd>Off by default · opt-in only · client-hashed queries</dd></div>
         </dl>
