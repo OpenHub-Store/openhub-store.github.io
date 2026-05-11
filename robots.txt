@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /app/
 Disallow: /preview/
 Disallow: /draft/
 
