@@ -40,15 +40,15 @@ homepage: true
                 </div>
                 <div class="hero__stats">
                     <div class="hero__stat">
-                        <span class="hero__stat__value" data-count="260000" data-suffix="+">0</span>
+                        <span class="hero__stat__value" data-count="{{ site.data.stats.updates }}" data-suffix="+">0</span>
                         <span class="hero__stat__label">Updates served</span>
                     </div>
                     <div class="hero__stat">
-                        <span class="hero__stat__value" data-count="12710" data-suffix="+">0</span>
+                        <span class="hero__stat__value" data-count="{{ site.data.stats.stars }}" data-suffix="+">0</span>
                         <span class="hero__stat__label">GitHub Stars</span>
                     </div>
                     <div class="hero__stat">
-                        <span class="hero__stat__value" data-count="4" data-suffix="">0</span>
+                        <span class="hero__stat__value" data-count="{{ site.data.stats.platforms }}" data-suffix="">0</span>
                         <span class="hero__stat__label">Platforms</span>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ homepage: true
                 </div>
                 <div class="hero__chip hero__chip--3">
                     <span class="chip__icon chip__icon--warm"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
-                    12K+ stars
+                    {% assign chip_stars = site.data.stats.stars | divided_by: 1000 %}{{ chip_stars }}K+ stars
                 </div>
                 <div class="hero__phone">
                     <div class="hero__phone-frame">
@@ -274,17 +274,17 @@ homepage: true
             </li>
             <li class="about__fact reveal">
                 <span class="about__fact__label">Updates served</span>
-                <span class="about__fact__value">260,000+</span>
+                <span class="about__fact__value">{% assign updates_k = site.data.stats.updates | divided_by: 1000 %}{{ updates_k }}K+</span>
                 <span class="about__fact__sub">since launch</span>
             </li>
             <li class="about__fact reveal">
                 <span class="about__fact__label">GitHub stars</span>
-                <span class="about__fact__value">12,710</span>
+                <span class="about__fact__value">{{ site.data.stats.stars }}</span>
                 <span class="about__fact__sub">at <a href="https://github.com/OpenHub-Store/GitHub-Store" target="_blank" rel="noopener">OpenHub-Store/GitHub-Store</a></span>
             </li>
             <li class="about__fact reveal">
                 <span class="about__fact__label">Languages</span>
-                <span class="about__fact__value">13</span>
+                <span class="about__fact__value">{{ site.data.stats.languages }}</span>
                 <span class="about__fact__sub">en, ar, bn, zh-Hans, es, fr, hi, it, ja, ko, pl, ru, tr</span>
             </li>
             <li class="about__fact reveal">

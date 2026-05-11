@@ -1,0 +1,80 @@
+name: Refresh stats
+
+on:
+  schedule:
+    # Daily at 03:17 UTC. Off-peak to avoid collisions with GitHub Pages
+    # rebuilds triggered by content pushes.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch GitHub stars
+        id: stars
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          stars=$(curl -sSL --fail \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            https://api.github.com/repos/OpenHub-Store/GitHub-Store \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["stargazers_count"])')
+          echo "stars=$stars" >> "$GITHUB_OUTPUT"
+          echo "stars=$stars"
+
+      - name: Fetch updates-served count from backend badge
+        id: updates
+        run: |
+          set -euo pipefail
+          # Badge SVG ships an aria-label like aria-label="279K" or
+          # aria-label="1.2M". Parse it back into an integer so the
+          # hero counter can animate to a real number.
+          svg=$(curl -sSL --fail "https://api.github-store.org/v1/badge/OpenHub-Store/GitHub-Store/downloads/5/2")
+          label=$(echo "$svg" | grep -oE 'aria-label="[^"]+"' | head -1 | sed 's/aria-label="//;s/"//')
+          updates=$(python3 - <<PY
+          label = "$label".strip()
+          if not label:
+              raise SystemExit("badge aria-label missing")
+          suffix = label[-1].upper()
+          if suffix in ('K', 'M', 'B'):
+              base = float(label[:-1])
+              mult = {'K': 1_000, 'M': 1_000_000, 'B': 1_000_000_000}[suffix]
+              print(int(base * mult))
+          else:
+              print(int(label.replace(',', '')))
+          PY
+          )
+          echo "updates=$updates" >> "$GITHUB_OUTPUT"
+          echo "updates=$updates"
+
+      - name: Write _data/stats.yml
+        run: |
+          cat > _data/stats.yml <<EOF
+          # Auto-refreshed by .github/workflows/refresh-stats.yml
+          # Manual edits will be overwritten on next run.
+          stars: ${{ steps.stars.outputs.stars }}
+          updates: ${{ steps.updates.outputs.updates }}
+          platforms: 4
+          languages: 13
+          EOF
+
+      - name: Commit if changed
+        run: |
+          set -euo pipefail
+          git config user.name "rainxchzed"
+          git config user.email "undefineduser087@gmail.com"
+          if git diff --quiet _data/stats.yml; then
+            echo "No changes — nothing to commit."
+            exit 0
+          fi
+          git add _data/stats.yml
+          git commit -m "Refresh stats: $(grep -E '^(stars|updates):' _data/stats.yml | tr '\n' ' ')"
+          git push origin main
