@@ -65,7 +65,7 @@ homepage: true
                 </div>
                 <div class="hero__chip hero__chip--3">
                     <span class="chip__icon chip__icon--warm"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
-                    {% assign chip_stars = site.data.stats.stars | divided_by: 1000 %}{{ chip_stars }}K+ stars
+                    {% assign chip_stars = site.data.stats.stars | divided_by: 1000.0 | round %}{{ chip_stars }}K+ stars
                 </div>
                 <div class="hero__phone">
                     <div class="hero__phone-frame">
@@ -274,7 +274,7 @@ homepage: true
             </li>
             <li class="about__fact reveal">
                 <span class="about__fact__label">Updates served</span>
-                <span class="about__fact__value">{% assign updates_k = site.data.stats.updates | divided_by: 1000 %}{{ updates_k }}K+</span>
+                <span class="about__fact__value">{% assign updates_k = site.data.stats.updates | divided_by: 1000.0 | round %}{{ updates_k }}K+</span>
                 <span class="about__fact__sub">since launch</span>
             </li>
             <li class="about__fact reveal">
