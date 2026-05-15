@@ -7,60 +7,113 @@ export interface Env {
   RATE_LIMITER: RateLimit;
   OAUTH_SERVICE_TOKEN: string;
   GITHUB_CLIENT_ID: string;
+  BACKEND_STATE_URL: string;
   BACKEND_EXCHANGE_URL: string;
   APP_SCHEME: string;
 }
 
 const STATE_RE = /^[A-Za-z0-9_-]{32,256}$/;
+const VERIFIER_RE = /^[A-Za-z0-9_-]{43,128}$/;
+const CHALLENGE_RE = /^[A-Za-z0-9_-]{43}$/;
 const HANDOFF_RE = /^[A-Za-z0-9_-]{8,256}$/;
 const REASON_RE = /^[a-z0-9_]{1,64}$/i;
 
-const STATE_TTL_SECONDS = 60;
+const VERIFIER_TTL_SECONDS = 60;
+const MAX_BODY_BYTES = 2048;
 const APP_SCOPE = "repo read:user";
 const GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize";
 const CALLBACK_URL = "https://github-store.org/auth/callback";
-const KV_PREFIX = "oauth:state:";
+const KV_PREFIX = "oauth:verifier:";
+const USER_AGENT = "gh-store-app-oauth-worker/0.1.0";
 
 export default {
   async fetch(req: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
     const url = new URL(req.url);
 
-    if (req.method !== "GET") {
-      return new Response("Method Not Allowed", { status: 405 });
-    }
-
-    if (url.pathname === "/auth/start") {
-      return handleStart(req, url, env);
+    if (url.pathname === "/auth/register") {
+      if (req.method !== "POST") {
+        return methodNotAllowed("POST");
+      }
+      return handleRegister(req, env);
     }
     if (url.pathname === "/auth/callback") {
+      if (req.method !== "GET") {
+        return methodNotAllowed("GET");
+      }
       return handleCallback(url, env);
     }
     return new Response("Not Found", { status: 404 });
   },
 };
 
-async function handleStart(req: Request, url: URL, env: Env): Promise<Response> {
+async function handleRegister(req: Request, env: Env): Promise<Response> {
   const ip = req.headers.get("CF-Connecting-IP") ?? "unknown";
   const { success } = await env.RATE_LIMITER.limit({ key: ip });
   if (!success) {
-    return new Response("rate_limited", {
-      status: 429,
-      headers: { "Retry-After": "60" },
+    return jsonResponse({ error: "rate_limited" }, 429, { "Retry-After": "60" });
+  }
+
+  const contentType = req.headers.get("Content-Type") ?? "";
+  if (!/^application\/json(\s*;.*)?$/i.test(contentType)) {
+    return jsonResponse({ error: "invalid_content_type" }, 415);
+  }
+
+  const lenHeader = req.headers.get("Content-Length");
+  if (lenHeader !== null) {
+    const len = Number(lenHeader);
+    if (!Number.isFinite(len) || len > MAX_BODY_BYTES) {
+      return jsonResponse({ error: "payload_too_large" }, 413);
+    }
+  }
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return jsonResponse({ error: "invalid_json" }, 400);
+  }
+  if (typeof body !== "object" || body === null) {
+    return jsonResponse({ error: "invalid_json" }, 400);
+  }
+
+  const { state, code_verifier, code_challenge } = body as Record<string, unknown>;
+  if (typeof state !== "string" || !STATE_RE.test(state)) {
+    return jsonResponse({ error: "invalid_state" }, 400);
+  }
+  if (typeof code_verifier !== "string" || !VERIFIER_RE.test(code_verifier)) {
+    return jsonResponse({ error: "invalid_verifier" }, 400);
+  }
+  if (typeof code_challenge !== "string" || !CHALLENGE_RE.test(code_challenge)) {
+    return jsonResponse({ error: "invalid_challenge" }, 400);
+  }
+
+  const key = `${KV_PREFIX}${state}`;
+  const existing = await env.OAUTH_STATE.get(key);
+  if (existing !== null) {
+    return jsonResponse({ error: "state_already_registered" }, 409);
+  }
+
+  let backendResp: Response;
+  try {
+    backendResp = await fetch(env.BACKEND_STATE_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": USER_AGENT,
+        "X-Oauth-Service-Token": env.OAUTH_SERVICE_TOKEN,
+      },
+      body: JSON.stringify({ state, code_challenge }),
     });
+  } catch {
+    return jsonResponse({ error: "backend_unreachable" }, 502);
+  }
+  if (!backendResp.ok) {
+    return jsonResponse({ error: "backend_register_failed" }, 502);
   }
 
-  const state = url.searchParams.get("state");
-  const challengeMethod = url.searchParams.get("code_challenge_method");
-
-  if (!state || !STATE_RE.test(state)) {
-    return new Response("invalid_state", { status: 400 });
-  }
-  if (challengeMethod && challengeMethod !== "S256") {
-    return new Response("invalid_challenge_method", { status: 400 });
-  }
-
-  await env.OAUTH_STATE.put(`${KV_PREFIX}${state}`, new Date().toISOString(), {
-    expirationTtl: STATE_TTL_SECONDS,
+  await env.OAUTH_STATE.put(key, code_verifier, {
+    expirationTtl: VERIFIER_TTL_SECONDS,
   });
 
   const authorize = new URL(GITHUB_AUTHORIZE_URL);
@@ -69,7 +122,7 @@ async function handleStart(req: Request, url: URL, env: Env): Promise<Response> 
   authorize.searchParams.set("state", state);
   authorize.searchParams.set("scope", APP_SCOPE);
 
-  return Response.redirect(authorize.toString(), 302);
+  return jsonResponse({ auth_url: authorize.toString() }, 200);
 }
 
 async function handleCallback(url: URL, env: Env): Promise<Response> {
@@ -78,14 +131,13 @@ async function handleCallback(url: URL, env: Env): Promise<Response> {
   const ghError = url.searchParams.get("error");
 
   const safeState = state && STATE_RE.test(state) ? state : "";
-
   if (!safeState) {
     return renderError(env, "invalid_state", "");
   }
 
   const key = `${KV_PREFIX}${safeState}`;
-  const stored = await env.OAUTH_STATE.get(key);
-  if (stored === null) {
+  const verifier = await env.OAUTH_STATE.get(key);
+  if (verifier === null) {
     return renderError(env, "invalid_state", safeState);
   }
   await env.OAUTH_STATE.delete(key);
@@ -104,9 +156,10 @@ async function handleCallback(url: URL, env: Env): Promise<Response> {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        "User-Agent": USER_AGENT,
         "X-Oauth-Service-Token": env.OAUTH_SERVICE_TOKEN,
       },
-      body: JSON.stringify({ code }),
+      body: JSON.stringify({ code, state: safeState, code_verifier: verifier }),
     });
   } catch {
     return renderError(env, "exchange_unreachable", safeState);
@@ -118,11 +171,11 @@ async function handleCallback(url: URL, env: Env): Promise<Response> {
 
   let handoff: string;
   try {
-    const body = (await exchangeResp.json()) as { handoff_id?: unknown };
-    if (typeof body.handoff_id !== "string" || !HANDOFF_RE.test(body.handoff_id)) {
+    const responseBody = (await exchangeResp.json()) as { handoff_id?: unknown };
+    if (typeof responseBody.handoff_id !== "string" || !HANDOFF_RE.test(responseBody.handoff_id)) {
       return renderError(env, "exchange_invalid_response", safeState);
     }
-    handoff = body.handoff_id;
+    handoff = responseBody.handoff_id;
   } catch {
     return renderError(env, "exchange_invalid_response", safeState);
   }
@@ -176,6 +229,26 @@ function htmlResponse(body: string, status: number): Response {
       "X-Content-Type-Options": "nosniff",
       "X-Robots-Tag": "noindex",
     },
+  });
+}
+
+function jsonResponse(body: object, status: number, extraHeaders: Record<string, string> = {}): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      "Referrer-Policy": "no-referrer",
+      "X-Content-Type-Options": "nosniff",
+      ...extraHeaders,
+    },
+  });
+}
+
+function methodNotAllowed(allowed: string): Response {
+  return new Response("Method Not Allowed", {
+    status: 405,
+    headers: { Allow: allowed },
   });
 }
 

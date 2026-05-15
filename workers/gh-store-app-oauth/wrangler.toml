@@ -12,6 +12,7 @@ zone_name = "github-store.org"
 # Public, non-secret config.
 [vars]
 GITHUB_CLIENT_ID = "Ov23linTY28VFpFjFiI9"
+BACKEND_STATE_URL = "https://api.github-store.org/v1/oauth/state"
 BACKEND_EXCHANGE_URL = "https://api.github-store.org/v1/oauth/exchange"
 APP_SCHEME = "githubstore"
 
@@ -46,6 +47,7 @@ workers_dev = true
 
 [env.staging.vars]
 GITHUB_CLIENT_ID = "Ov23linTY28VFpFjFiI9"
+BACKEND_STATE_URL = "https://api.github-store.org/v1/oauth/state"
 BACKEND_EXCHANGE_URL = "https://api.github-store.org/v1/oauth/exchange"
 APP_SCHEME = "githubstore"
 

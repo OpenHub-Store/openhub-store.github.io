@@ -1,37 +1,121 @@
 # gh-store-app-oauth
 
-Cloudflare Worker that runs the GitHub OAuth start/callback hop for the GitHub
-Store mobile app. The Jekyll site continues to serve every other path on
-`github-store.org`; this Worker only owns `/auth/*`.
+Cloudflare Worker that runs the GitHub OAuth register/callback hop for the
+GitHub Store mobile app with full PKCE. The Jekyll site continues to serve
+every other path on `github-store.org`; this Worker only owns `/auth/*`.
 
 This is **separate** from the Decap CMS OAuth worker. Do not merge them — they
 have different scopes, different audiences, and different lifecycles.
 
-## Flow
+## Flow (PKCE Pattern A)
 
 ```
-App                       Worker (this)                         Backend
- │                              │                                  │
- │ generate state (32B b64url)  │                                  │
- │ open https://github-store.org/auth/start?state=<S>              │
- │ ────────────────────────────▶│                                  │
- │                              │ KV.put oauth:state:<S> ttl=60s   │
- │                              │ 302 → github.com/login/oauth/authorize
- │                              │                                  │
- │  (user signs in on GitHub)                                      │
+App                       Worker (this)                              Backend
+ │                              │                                       │
+ │ generate locally:                                                    │
+ │   state         (32B → b64url, 43 chars)                             │
+ │   code_verifier (43-128 char b64url)                                 │
+ │   code_challenge = b64url(SHA-256(verifier))                         │
+ │                                                                      │
+ │ POST /auth/register                                                  │
+ │   { state, code_verifier, code_challenge }                           │
+ │ ────────────────────────────▶│                                       │
+ │                              │ validate formats                      │
+ │                              │ POST /v1/oauth/state { state,         │
+ │                              │   code_challenge }                    │
+ │                              │   X-Oauth-Service-Token: <T>          │
+ │                              │ ─────────────────────────────────────▶│
+ │                              │ ◀── 2xx                               │
+ │                              │ KV.put oauth:verifier:<S> = verifier  │
+ │                              │   ttl=60s                             │
+ │ ◀── 200 { auth_url }         │                                       │
+ │                                                                      │
+ │ app opens auth_url in system browser                                 │
+ │                              │                                       │
+ │  (user signs in on GitHub)                                           │
  │                              │ ◀── GitHub 302 /auth/callback?code=<G>&state=<S>
- │                              │ KV.get + KV.delete (one-shot)    │
- │                              │ POST /v1/oauth/exchange { code } │
- │                              │   X-Oauth-Service-Token: <T>     │
- │                              │ ─────────────────────────────────▶
- │                              │ ◀── { handoff_id }               │
- │                              │ render HTML with deep link       │
- │ ◀── githubstore://auth?handoff=<H>&state=<S>                    │
- │                              │                                  │
- │ POST /v1/oauth/handoff/<H>   │                                  │
- │ ─────────────────────────────────────────────────────────────── ▶
- │ ◀── { access_token }                                            │
+ │                              │ KV.get oauth:verifier:<S>             │
+ │                              │   miss → error page                   │
+ │                              │ KV.delete (one-shot)                  │
+ │                              │ POST /v1/oauth/exchange { code,       │
+ │                              │   state, code_verifier }              │
+ │                              │   X-Oauth-Service-Token: <T>          │
+ │                              │ ─────────────────────────────────────▶│
+ │                              │ ◀── { handoff_id }                    │
+ │                              │ render HTML with deep link            │
+ │ ◀── githubstore://auth?handoff=<H>&state=<S>                         │
+ │                                                                      │
+ │ POST /v1/oauth/handoff/<H>                                           │
+ │ ────────────────────────────────────────────────────────────────────▶│
+ │ ◀── { access_token }                                                 │
 ```
+
+The `code_verifier` never leaves the Worker on a user-visible URL — it travels
+only on the server-to-server hop to the backend's exchange endpoint, keyed by
+the single-use `state`.
+
+## Endpoints
+
+### `POST /auth/register`
+
+Called by the app (server-style; not browser-loaded). Expects JSON.
+
+Request:
+
+```json
+{
+  "state":           "<43-256 char base64url>",
+  "code_verifier":   "<43-128 char base64url>",
+  "code_challenge":  "<43 char base64url, == base64url(SHA-256(verifier))>"
+}
+```
+
+Headers:
+
+- `Content-Type: application/json`
+
+Responses:
+
+| status | body                                       | meaning                                          |
+| -----: | ------------------------------------------ | ------------------------------------------------ |
+| 200    | `{ "auth_url": "https://github.com/…" }`   | App opens this URL in the system browser         |
+| 400    | `{ "error": "invalid_state" }`             | `state` missing or not `^[A-Za-z0-9_-]{32,256}$` |
+| 400    | `{ "error": "invalid_verifier" }`          | `code_verifier` not `^[A-Za-z0-9_-]{43,128}$`    |
+| 400    | `{ "error": "invalid_challenge" }`         | `code_challenge` not `^[A-Za-z0-9_-]{43}$`       |
+| 400    | `{ "error": "invalid_json" }`              | Body unparseable or not an object                |
+| 409    | `{ "error": "state_already_registered" }`  | This `state` is already pinned in KV             |
+| 413    | `{ "error": "payload_too_large" }`         | Body exceeds 2 KiB                               |
+| 415    | `{ "error": "invalid_content_type" }`      | Missing/wrong `Content-Type`                     |
+| 429    | `{ "error": "rate_limited" }`              | Per-IP limit hit (see Rate limiting)             |
+| 502    | `{ "error": "backend_unreachable" }`       | Worker → backend `/v1/oauth/state` failed (network) |
+| 502    | `{ "error": "backend_register_failed" }`   | Backend `/v1/oauth/state` returned non-2xx       |
+
+Notes:
+
+- `auth_url` is `https://github.com/login/oauth/authorize?client_id=…&redirect_uri=https://github-store.org/auth/callback&state=<S>&scope=repo+read:user`.
+- Worker registers `state → code_verifier` in KV (TTL 60 s, single-use) **only
+  after** the backend confirms the `state → code_challenge` registration.
+- The app **must not** open `/auth/register` in a browser. Browsers cache and
+  history-log URLs; native HTTP clients do not.
+
+### `GET /auth/callback`
+
+Hit by the user's browser after GitHub completes the authorize step. Returns
+HTML that redirects via custom scheme to the app.
+
+Query params (set by GitHub):
+
+- `state`
+- `code` (on success) **or** `error` (on user-cancel / GitHub error)
+
+Worker behavior:
+
+1. Validate `state` format. KV-lookup `oauth:verifier:<state>` (miss → error page).
+2. `KV.delete` (single-use).
+3. If GitHub returned `error`, render error page passing the sanitized reason.
+4. Otherwise POST backend `/v1/oauth/exchange` with `{ code, state, code_verifier }`.
+5. On 2xx → render success HTML with `githubstore://auth?handoff=<H>&state=<S>`.
+6. On any failure → render error HTML with `githubstore://auth?error=<reason>&state=<S>`.
 
 ## Deep-link contract (app must honor)
 
@@ -62,6 +146,40 @@ githubstore://auth?error=<reason>&state=<original-state>
 The app should treat any unknown `reason` as a fatal failure and surface a
 generic "sign-in failed" message to the user.
 
+## Client contract (app side)
+
+The app generates three values locally before calling `/auth/register`:
+
+```kotlin
+val random = SecureRandom()
+
+val stateBytes = ByteArray(32).also { random.nextBytes(it) }
+val state = Base64.encodeToString(
+    stateBytes,
+    Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP,
+)
+
+// PKCE: 32 random bytes → 43-char base64url verifier is the recommended
+// minimum. Worker accepts up to 128 chars.
+val verifierBytes = ByteArray(32).also { random.nextBytes(it) }
+val codeVerifier = Base64.encodeToString(
+    verifierBytes,
+    Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP,
+)
+
+val challengeBytes = MessageDigest.getInstance("SHA-256")
+    .digest(codeVerifier.toByteArray(Charsets.US_ASCII))
+val codeChallenge = Base64.encodeToString(
+    challengeBytes,
+    Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP,
+)
+```
+
+All three values match `^[A-Za-z0-9_-]+$`. The challenge is the base64url
+encoding of the **SHA-256 of the verifier's ASCII bytes**, per
+[RFC 7636 §4.2](https://datatracker.ietf.org/doc/html/rfc7636#section-4.2).
+Anything else 400s at `/auth/register`.
+
 ## Configuration
 
 ### Vars (committed in `wrangler.toml`)
@@ -69,6 +187,7 @@ generic "sign-in failed" message to the user.
 | name                   | value                                              |
 | ---------------------- | -------------------------------------------------- |
 | `GITHUB_CLIENT_ID`     | `Ov23linTY28VFpFjFiI9` — public per OAuth spec     |
+| `BACKEND_STATE_URL`    | `https://api.github-store.org/v1/oauth/state`      |
 | `BACKEND_EXCHANGE_URL` | `https://api.github-store.org/v1/oauth/exchange`   |
 | `APP_SCHEME`           | `githubstore`                                      |
 
@@ -89,8 +208,8 @@ Bitwarden, Doppler — not Slack/email).
 
 ### KV namespace
 
-`OAUTH_STATE` — holds `oauth:state:<state>` for 60 s. Free-tier 1000 ops/day is
-plenty for current auth volume.
+`OAUTH_STATE` — holds `oauth:verifier:<state>` for 60 s. Free-tier 1000 ops/day
+is plenty for current auth volume.
 
 ```
 wrangler kv namespace create OAUTH_STATE
@@ -109,10 +228,20 @@ npm install
 npm run dev
 ```
 
-The dev server runs at `http://localhost:8787`. Hit
-`http://localhost:8787/auth/start?state=<32+ b64url chars>` to exercise the
-redirect path. The full flow requires the GitHub OAuth app callback to be
-pointed at the dev URL — easier to test in staging.
+The dev server runs at `http://localhost:8787`. Exercise registration with:
+
+```
+curl -sS -X POST http://localhost:8787/auth/register \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "state":           "AAAA…43 chars…",
+    "code_verifier":   "BBBB…43 chars…",
+    "code_challenge":  "CCCC…43 chars…"
+  }'
+```
+
+The full flow requires the GitHub OAuth app callback to be pointed at the dev
+URL — easier to test in staging.
 
 ## Deploy
 
@@ -140,24 +269,9 @@ GitHub OAuth app from `githubstore://callback` to
 `https://github-store.org/auth/callback`. The client secret stays on the
 backend; this Worker never sees it.
 
-## State contract (app must honor)
-
-The app generates `state` as **32 cryptographically random bytes**, encoded as
-**Base64URL without padding** (no `=` characters). That produces a 43-character
-string matching `^[A-Za-z0-9_-]{32,256}$`. Anything shorter, padded, or with
-non-URL-safe alphabet characters 400s at `/auth/start`.
-
-```kotlin
-val bytes = ByteArray(32).also { SecureRandom().nextBytes(it) }
-val state = Base64.encodeToString(
-    bytes,
-    Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP,
-)
-```
-
 ## Rate limiting
 
-`/auth/start` is rate-limited per client IP via the Workers Rate Limiting
+`/auth/register` is rate-limited per client IP via the Workers Rate Limiting
 binding (`RATE_LIMITER`). Current limit: **2 requests per 60 s sliding window
 per IP** — the closest expressible cap to the agreed 60/hr/IP intent given the
 binding's 10 s / 60 s period constraint. Effective ceiling ≈ 120 reqs/hr/IP,
@@ -166,31 +280,38 @@ shared NAT (school/cafe Wi-Fi).
 
 If an exact hourly cap is required, layer a Cloudflare WAF rate-limiting rule
 on the zone with `period = 3600, limit = 60` matching `http.request.uri.path
-eq "/auth/start"`. The WAF rule and the binding compose; both must allow the
-request to pass.
+eq "/auth/register"`. The WAF rule and the binding compose; both must allow
+the request to pass.
 
 `/auth/callback` is not rate-limited at the Worker layer because it is gated by
-a 60 s single-use `state` token — abuse there self-throttles via KV misses.
+a 60 s single-use verifier in KV — abuse there self-throttles via KV misses.
 
 ## Security notes
 
-- No tokens in URLs. Only `state` (CSRF) and `handoff_id` (opaque) cross the
-  wire on the redirect/deep-link path.
-- `state` is strictly validated (`^[A-Za-z0-9_-]{32,256}$`) on both endpoints
-  before any KV access.
-- KV is the only store this Worker uses; `state` TTL is 60 s and is deleted
-  immediately on first read (KV has no atomic GETDEL — the read + delete pair
-  is effectively single-use because subsequent reads will miss either due to
-  the prior delete or the TTL).
-- The Worker never logs `code`, `state`, `handoff_id`, or `OAUTH_SERVICE_TOKEN`.
-  Status codes and durations only. `wrangler tail` will show no sensitive
-  values.
+- No tokens, codes, or verifiers in user-visible URLs. `/auth/register` is a
+  JSON POST. The verifier moves only on server-to-server hops (app → Worker,
+  Worker → backend) and is keyed in KV by the single-use `state`.
+- `state`, `code_verifier`, `code_challenge`, and `handoff_id` are each
+  strictly format-validated before any KV access or backend call.
+- KV `oauth:verifier:<state>` TTL is 60 s and is deleted immediately on first
+  read. KV has no atomic GETDEL — the read-then-delete pair is effectively
+  single-use because subsequent reads will miss either due to the prior delete
+  or the TTL.
+- Worker → backend calls send `X-Oauth-Service-Token` (shared secret). The
+  `Host` header is `api.github-store.org` (derived from the request URL —
+  Cloudflare Workers does not let you override Host, so the URL is the source
+  of truth).
+- The Worker never logs `code`, `state`, `code_verifier`, `code_challenge`,
+  `handoff_id`, or `OAUTH_SERVICE_TOKEN`. Status codes and durations only.
+  `wrangler tail` will show no sensitive values.
 - Response pages set `Cache-Control: no-store`, `Referrer-Policy: no-referrer`,
   `X-Content-Type-Options: nosniff`, `X-Robots-Tag: noindex`.
 - The HTML deep-link page embeds the URL in a `JSON.stringify`d JS literal with
   an additional `</script>` escape, plus an attribute-escaped anchor fallback.
   `state` and `handoff_id` are pre-validated, so the embedding is a
   defense-in-depth measure.
+- The Worker never sees the GitHub `client_secret`. The backend holds it and
+  performs the `code → access_token` exchange.
 
 ## Files
 
