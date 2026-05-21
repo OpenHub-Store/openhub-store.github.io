@@ -16,21 +16,12 @@ BACKEND_STATE_URL = "https://api.github-store.org/v1/oauth/state"
 BACKEND_EXCHANGE_URL = "https://api.github-store.org/v1/oauth/exchange"
 APP_SCHEME = "githubstore"
 
-# KV namespace holds the one-shot state token (TTL 60s).
-# Create with:
-#   wrangler kv namespace create OAUTH_STATE
-#   wrangler kv namespace create OAUTH_STATE --preview
-# Then paste the returned IDs below.
-[[kv_namespaces]]
-binding = "OAUTH_STATE"
-id = "8fb32ad78ab5447289a30fa45d0813a4"
-preview_id = "886ef1e9012c452a9b92e1533ec3a09c"
-
-# Per-IP rate limit on /auth/start. Workers Rate Limiting bindings only support
-# `period = 10` or `period = 60` seconds — closest match to the agreed 60/hr/IP
-# intent is 2 requests per 60s sliding window (~120/hr ceiling). This blocks
-# scrapers (which run thousands/hr) while leaving headroom for shared NAT.
-# For an exact hourly cap, layer a Cloudflare WAF rate-limit rule on the zone.
+# Per-IP rate limit on /auth/register. Workers Rate Limiting bindings only
+# support `period = 10` or `period = 60` seconds — closest match to the agreed
+# 60/hr/IP intent is 2 requests per 60s sliding window (~120/hr ceiling). This
+# blocks scrapers (which run thousands/hr) while leaving headroom for shared
+# NAT. For an exact hourly cap, layer a Cloudflare WAF rate-limit rule on the
+# zone.
 [[unsafe.bindings]]
 name = "RATE_LIMITER"
 type = "ratelimit"
@@ -39,8 +30,18 @@ simple = { limit = 2, period = 60 }
 
 # Secrets (do NOT commit values — set via `wrangler secret put`):
 #   OAUTH_SERVICE_TOKEN   shared-secret header sent to api.github-store.org
+#   STATE_ENC_KEY         AES-GCM-256 key, base64 of 32 random bytes.
+#                         Generate: `openssl rand 32 | base64`
+#                         Rotation: see README §"State encryption key".
+#
+# Storage: this Worker is stateless. The PKCE code_verifier is encrypted with
+# STATE_ENC_KEY and carried inside the `state` query param sent to GitHub, so
+# there is no KV namespace, no Durable Object, and no per-flow free-tier
+# consumption. Backend `/v1/oauth/state` owns state uniqueness via its
+# INSERT … ON CONFLICT DO NOTHING constraint; the Worker maps backend 409 to
+# the same `state_already_registered` response shape the app already handles.
 
-# Staging environment — same code, separate KV + secret, no live route.
+# Staging environment — same code, separate secret, no live route.
 [env.staging]
 name = "gh-store-app-oauth-staging"
 workers_dev = true
@@ -50,10 +51,6 @@ GITHUB_CLIENT_ID = "Ov23linTY28VFpFjFiI9"
 BACKEND_STATE_URL = "https://api.github-store.org/v1/oauth/state"
 BACKEND_EXCHANGE_URL = "https://api.github-store.org/v1/oauth/exchange"
 APP_SCHEME = "githubstore"
-
-[[env.staging.kv_namespaces]]
-binding = "OAUTH_STATE"
-id = "REPLACE_WITH_STAGING_KV_ID"
 
 [[env.staging.unsafe.bindings]]
 name = "RATE_LIMITER"

@@ -2,3 +2,7 @@
 # In production these are set via `wrangler secret put <NAME>`.
 
 OAUTH_SERVICE_TOKEN="replace-me-with-shared-secret"
+
+# AES-GCM-256 key, base64 of 32 random bytes.
+# Generate locally with: `openssl rand 32 | base64`
+STATE_ENC_KEY="replace-me-with-base64-of-32-random-bytes"
