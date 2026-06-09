@@ -19,7 +19,16 @@ const HANDOFF_RE = /^[A-Za-z0-9_-]{8,256}$/;
 const REASON_RE = /^[a-z0-9_]{1,64}$/i;
 const BLOB_RE = /^[A-Za-z0-9_-]{32,512}$/;
 
-const VERIFIER_TTL_SECONDS = 60;
+// Bumped from 60 → 600 (10 min) after issue #730: a Windows user reported
+// `invalid_state` because manually signing into GitHub (creds + 2FA + clicking
+// Authorize on the consent screen) consistently took longer than 60 seconds.
+// The verifier blob's embedded `e` expiry timestamp would already be in the
+// past by the time the callback fired, decryptVerifier returned null, and the
+// worker rendered `invalid_state` even though the user did everything right.
+// 10 minutes is generous but still bounded — the blob is opaque to GitHub
+// and to the user's browser, so a stale blob can't be replayed elsewhere.
+// The backend's `oauth_ephemeral.expires_at` TTL is bumped in lockstep.
+const VERIFIER_TTL_SECONDS = 600;
 const MAX_BODY_BYTES = 2048;
 const APP_SCOPE = "public_repo read:user";
 const GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize";
@@ -48,7 +57,7 @@ export default {
       if (req.method !== "GET") {
         return methodNotAllowed("GET");
       }
-      return handleCallback(url, env);
+      return handleCallback(url, env, req);
     }
     return new Response("Not Found", { status: 404 });
   },
@@ -142,31 +151,66 @@ async function handleRegister(req: Request, env: Env): Promise<Response> {
   return jsonResponse({ auth_url: authorize.toString() }, 200);
 }
 
-async function handleCallback(url: URL, env: Env): Promise<Response> {
+async function handleCallback(url: URL, env: Env, req: Request): Promise<Response> {
   const rawState = url.searchParams.get("state");
   const code = url.searchParams.get("code");
   const ghError = url.searchParams.get("error");
 
+  // Diagnostic context — issue #730 made it clear we can't distinguish
+  // between the four distinct `invalid_state` paths from production logs.
+  // Hash inputs that may be sensitive (raw state, verifier) and emit
+  // `cf.colo` so we can spot any colo-skew, plus the originalState prefix
+  // so a reporter's deep-link `?state=…` value can be grepped against logs.
+  const cfColo = (req as { cf?: { colo?: string } }).cf?.colo ?? "unknown";
+  const rawStateLen = rawState?.length ?? 0;
+
   const parts = rawState ? rawState.split(STATE_BLOB_SEPARATOR) : [];
   if (parts.length !== 2) {
+    console.warn(
+      `[oauth-callback] invalid_state reason=split_count parts=${parts.length} ` +
+        `raw_state_len=${rawStateLen} cf_colo=${cfColo}`,
+    );
     return renderError(env, "invalid_state", "");
   }
   const [originalState, blob] = parts as [string, string];
+  const statePrefix = originalState.slice(0, 8);
 
   if (!STATE_RE.test(originalState)) {
+    console.warn(
+      `[oauth-callback] invalid_state reason=state_re state_len=${originalState.length} ` +
+        `state_prefix=${statePrefix} cf_colo=${cfColo}`,
+    );
     return renderError(env, "invalid_state", "");
   }
   if (!BLOB_RE.test(blob)) {
+    console.warn(
+      `[oauth-callback] invalid_state reason=blob_re blob_len=${blob.length} ` +
+        `state_prefix=${statePrefix} cf_colo=${cfColo}`,
+    );
     return renderError(env, "invalid_state", originalState);
   }
 
   let verifier: string | null;
+  let decryptFailureReason: string | null = null;
   try {
-    verifier = await decryptVerifier(blob, env);
-  } catch {
+    const result = await decryptVerifierDiagnosed(blob, env);
+    verifier = result.verifier;
+    decryptFailureReason = result.failureReason;
+  } catch (e) {
+    console.warn(
+      `[oauth-callback] encryption_unavailable error="${(e as Error).message}" ` +
+        `state_prefix=${statePrefix} cf_colo=${cfColo}`,
+    );
     return renderError(env, "encryption_unavailable", originalState);
   }
   if (verifier === null) {
+    // decryptFailureReason is one of: base64_decode, blob_too_short,
+    // version_mismatch, aes_gcm_decrypt, json_parse, verifier_re,
+    // expiry_invalid, expired (TTL fired before user finished sign-in).
+    console.warn(
+      `[oauth-callback] invalid_state reason=decrypt_${decryptFailureReason} ` +
+        `state_prefix=${statePrefix} cf_colo=${cfColo}`,
+    );
     return renderError(env, "invalid_state", originalState);
   }
 
@@ -327,6 +371,60 @@ async function encryptVerifier(verifier: string, env: Env): Promise<string> {
   blob.set(nonce, 1);
   blob.set(ct, 1 + NONCE_BYTES);
   return base64UrlEncode(blob);
+}
+
+// Issue #730: production logs could not distinguish among the eight distinct
+// decrypt failure modes — most importantly, the TTL-expired path was being
+// silently classified as `invalid_state` and looked indistinguishable from a
+// real attack. The diagnosed variant returns the same `verifier` field plus a
+// machine-readable `failureReason` for log correlation. The plain
+// `decryptVerifier` wrapper below preserves the existing contract.
+type DecryptResult = { verifier: string | null; failureReason: string | null };
+
+async function decryptVerifierDiagnosed(blobB64: string, env: Env): Promise<DecryptResult> {
+  let blob: Uint8Array;
+  try {
+    blob = base64UrlDecode(blobB64);
+  } catch {
+    return { verifier: null, failureReason: "base64_decode" };
+  }
+  if (blob.length < 1 + NONCE_BYTES + GCM_TAG_BYTES) {
+    return { verifier: null, failureReason: "blob_too_short" };
+  }
+  if (blob[0] !== ENC_VERSION) {
+    return { verifier: null, failureReason: "version_mismatch" };
+  }
+
+  const nonce = blob.subarray(1, 1 + NONCE_BYTES);
+  const ct = blob.subarray(1 + NONCE_BYTES);
+  const key = await getEncKey(env);
+
+  let plaintextBytes: Uint8Array;
+  try {
+    plaintextBytes = new Uint8Array(
+      await crypto.subtle.decrypt({ name: "AES-GCM", iv: nonce }, key, ct),
+    );
+  } catch {
+    return { verifier: null, failureReason: "aes_gcm_decrypt" };
+  }
+
+  let payload: { v?: unknown; e?: unknown };
+  try {
+    payload = JSON.parse(new TextDecoder().decode(plaintextBytes));
+  } catch {
+    return { verifier: null, failureReason: "json_parse" };
+  }
+  if (typeof payload.v !== "string" || !VERIFIER_RE.test(payload.v)) {
+    return { verifier: null, failureReason: "verifier_re" };
+  }
+  if (typeof payload.e !== "number" || !Number.isFinite(payload.e)) {
+    return { verifier: null, failureReason: "expiry_invalid" };
+  }
+  if (payload.e < Date.now()) {
+    return { verifier: null, failureReason: "expired" };
+  }
+
+  return { verifier: payload.v, failureReason: null };
 }
 
 // decryptVerifier returns the original verifier string if the blob is a valid,
